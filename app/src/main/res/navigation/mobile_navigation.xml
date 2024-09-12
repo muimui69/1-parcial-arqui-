@@ -7,19 +7,30 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.personal_training.ui.home.HomeFragment"
+        android:name="com.example.personal_training.vista.ui.clientes.HomeFragment"
         android:label="@string/menu_clientes"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_clientes">
+        <action
+            android:id="@+id/action_nav_clientes_to_agregarClienteFragment"
+            app:destination="@id/agregarClienteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/agregarClienteFragment"
+        android:name="com.example.personal_training.vista.ui.clientes.AgregarClienteFragment"
+        android:label="Agregar Cliente"
+        tools:layout="@layout/fragment_agregar_cliente" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.personal_training.ui.gallery.GalleryFragment"
+        android:name="com.example.personal_training.vista.ui.rutinas.GalleryFragment"
         android:label="@string/menu_rutinas"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_rutinas" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.personal_training.ui.slideshow.SlideshowFragment"
+        android:name="com.example.personal_training.vista.ui.dietas.SlideshowFragment"
         android:label="@string/menu_dietas"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_dietas" />
+
 </navigation>

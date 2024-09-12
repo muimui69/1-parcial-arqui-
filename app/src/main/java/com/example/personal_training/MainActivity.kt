@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.personal_training.databinding.ActivityMainBinding
+import com.example.personal_training.db.DatabaseHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,19 +22,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val dbHelper = DatabaseHelper(this)
+        dbHelper.writableDatabase
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -43,6 +43,42 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+        // Detect the current fragment
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.nav_home -> {
+                    binding.appBarMain.fab.show()
+                    binding.appBarMain.fab.setOnClickListener {
+                        binding.appBarMain.fab.hide()  // Ocultar FAB al navegar a la pantalla de agregar cliente
+                        navController.navigate(R.id.action_nav_clientes_to_agregarClienteFragment)
+                    }
+                }
+                R.id.nav_gallery -> {
+                    binding.appBarMain.fab.setOnClickListener {
+                        // Acción para agregar una rutina
+                        Snackbar.make(it, "Añadir Rutina", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                R.id.nav_slideshow -> {
+                    binding.appBarMain.fab.setOnClickListener {
+                        // Acción para agregar un ejercicio
+                        Snackbar.make(it, "Añadir Dieta", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+//                R.id.nav_slideshow -> {
+//                    binding.appBarMain.fab.setOnClickListener {
+//                        // Acción para agregar un ejercicio
+//                        Snackbar.make(it, "Añadir Ejercicio", Snackbar.LENGTH_LONG).show()
+//                    }
+//                }
+                else -> {
+                    // Si no es ninguno de los fragmentos específicos
+                    binding.appBarMain.fab.setOnClickListener(null)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
