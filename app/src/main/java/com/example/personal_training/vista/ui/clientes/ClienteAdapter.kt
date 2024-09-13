@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personal_training.R
 import com.example.personal_training.controlador.CCliente
@@ -34,10 +35,18 @@ class ClienteAdapter(private val listaClientes: MutableList<Cliente>,
         holder.correoTextView.text = cliente.correo
 
         // Configurar botón editar
+//        holder.btnEditar.setOnClickListener {
+//            // Navegar a la pantalla de editar cliente o mostrar un diálogo
+//            Snackbar.make(it, "Editar cliente: ${cliente.nombre}", Snackbar.LENGTH_LONG).show()
+//            // Aquí puedes implementar la lógica para editar
+//        }
+
+        // Configurar botón editar
         holder.btnEditar.setOnClickListener {
-            // Navegar a la pantalla de editar cliente o mostrar un diálogo
-            Snackbar.make(it, "Editar cliente: ${cliente.nombre}", Snackbar.LENGTH_LONG).show()
-            // Aquí puedes implementar la lógica para editar
+            val bundle = Bundle().apply {
+                putInt("clienteId", cliente.id!!)  // Pasar el ID del cliente como argumento
+            }
+            holder.itemView.findNavController().navigate(R.id.action_nav_clientes_to_agregarClienteFragment, bundle)
         }
 
         holder.btnEliminar.setOnClickListener {

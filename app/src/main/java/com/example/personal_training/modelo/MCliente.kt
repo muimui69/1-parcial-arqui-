@@ -18,6 +18,26 @@ data class Cliente(
 class MCliente(context: Context) {
     private val dbHelper: DatabaseHelper = DatabaseHelper(context)
 
+    fun obtenerCliente(id: Int): Cliente? {
+        val db: SQLiteDatabase = dbHelper.readableDatabase
+        val cursor = db.query("cliente", null,"id = ?", arrayOf(id.toString()),  null,null,null)
+
+        var cliente: Cliente? = null
+        if (cursor.moveToFirst()) {
+            cliente = Cliente(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                peso = cursor.getFloat(cursor.getColumnIndexOrThrow("peso")),
+                altura = cursor.getFloat(cursor.getColumnIndexOrThrow("altura")),
+                telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono")),
+                correo = cursor.getString(cursor.getColumnIndexOrThrow("correo")),
+                sexo = cursor.getString(cursor.getColumnIndexOrThrow("sexo"))
+            )
+        }
+        cursor.close()
+        return cliente
+    }
+
     fun crearCliente(cliente: Cliente): Long {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {

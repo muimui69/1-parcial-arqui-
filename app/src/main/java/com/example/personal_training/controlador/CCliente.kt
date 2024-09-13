@@ -7,6 +7,10 @@ import com.example.personal_training.modelo.MCliente
 class CCliente(context: Context) {
     private val modeloCliente = MCliente(context)
 
+    fun obtenerCliente(id: Int): Cliente? {
+        return modeloCliente.obtenerCliente(id)
+    }
+
     fun crearCliente(cliente: Cliente): Long {
         return modeloCliente.crearCliente(cliente)
     }
