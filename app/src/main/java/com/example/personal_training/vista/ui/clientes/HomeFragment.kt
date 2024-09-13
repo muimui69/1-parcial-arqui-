@@ -1,7 +1,6 @@
 package com.example.personal_training.vista.ui.clientes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.example.personal_training.modelo.Cliente
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentClientesBinding? = null
+    private lateinit var controladorCliente: CCliente
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val controladorCliente = CCliente(requireContext())
-        val listaClientes: List<Cliente> = controladorCliente.obtenerClientes()
+        val listaClientes: MutableList<Cliente> =  controladorCliente.obtenerClientes().toMutableList()
 
         if (listaClientes.isEmpty()) {
             binding.recyclerViewClientes.visibility = View.GONE
@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
             binding.textNoClientes.visibility = View.GONE
             binding.recyclerViewClientes.apply {
                 layoutManager = LinearLayoutManager(requireContext())
-                adapter = ClienteAdapter(listaClientes)
+                adapter = ClienteAdapter(listaClientes,controladorCliente)
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.example.personal_training.controlador
 
 import android.content.Context
-import android.util.Log
 import com.example.personal_training.modelo.Cliente
 import com.example.personal_training.modelo.MCliente
 

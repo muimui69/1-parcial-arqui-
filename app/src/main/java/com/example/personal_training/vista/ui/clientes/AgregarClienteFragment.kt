@@ -41,6 +41,7 @@ class AgregarClienteFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSexo.adapter = adapter
 
+
         // Configuración del botón para guardar cliente
         binding.btnGuardarCliente.setOnClickListener {
             val nombre = binding.etNombreCliente.text.toString()
@@ -75,6 +76,7 @@ class AgregarClienteFragment : Fragment() {
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
