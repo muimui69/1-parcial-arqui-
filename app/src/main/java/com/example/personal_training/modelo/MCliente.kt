@@ -15,12 +15,25 @@ data class Cliente(
     var telefono: String
 )
 
-class MCliente(context: Context) {
-    private val dbHelper: DatabaseHelper = DatabaseHelper(context)
+class MCliente(contexto: Context) {
+    private val dbHelper: DatabaseHelper = DatabaseHelper(contexto)
+
+    fun crearCliente(cliente: Cliente): Long {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val valores = ContentValues().apply {
+            put("altura", cliente.altura)
+            put("correo", cliente.correo)
+            put("nombre", cliente.nombre)
+            put("peso", cliente.peso)
+            put("sexo", cliente.sexo)
+            put("telefono", cliente.telefono)
+        }
+        return db.insert("cliente", null, valores)
+    }
 
     fun obtenerCliente(id: Int): Cliente? {
         val db: SQLiteDatabase = dbHelper.readableDatabase
-        val cursor = db.query("cliente", null,"id = ?", arrayOf(id.toString()),  null,null,null)
+        val cursor = db.query("cliente", null, "id = ?", arrayOf(id.toString()), null, null, null)
 
         var cliente: Cliente? = null
         if (cursor.moveToFirst()) {
@@ -36,37 +49,6 @@ class MCliente(context: Context) {
         }
         cursor.close()
         return cliente
-    }
-
-    fun crearCliente(cliente: Cliente): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        val valores = ContentValues().apply {
-            put("altura", cliente.altura)
-            put("correo", cliente.correo)
-            put("nombre", cliente.nombre)
-            put("peso", cliente.peso)
-            put("sexo", cliente.sexo)
-            put("telefono", cliente.telefono)
-        }
-        return db.insert("cliente", null, valores)
-    }
-
-    fun actualizarCliente(cliente: Cliente): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        val valores = ContentValues().apply {
-            put("altura", cliente.altura)
-            put("correo", cliente.correo)
-            put("nombre", cliente.nombre)
-            put("peso", cliente.peso)
-            put("sexo", cliente.sexo)
-            put("telefono", cliente.telefono)
-        }
-        return db.update("cliente", valores, "id = ?", arrayOf(cliente.id.toString()))
-    }
-
-    fun eliminarCliente(id: Int): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        return db.delete("cliente", "id = ?", arrayOf(id.toString()))
     }
 
     fun obtenerClientes(): List<Cliente> {
@@ -87,5 +69,23 @@ class MCliente(context: Context) {
         }
         cursor.close()
         return listaClientes
+    }
+
+    fun actualizarCliente(cliente: Cliente): Int {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        val valores = ContentValues().apply {
+            put("altura", cliente.altura)
+            put("correo", cliente.correo)
+            put("nombre", cliente.nombre)
+            put("peso", cliente.peso)
+            put("sexo", cliente.sexo)
+            put("telefono", cliente.telefono)
+        }
+        return db.update("cliente", valores, "id = ?", arrayOf(cliente.id.toString()))
+    }
+
+    fun eliminarCliente(id: Int): Int {
+        val db: SQLiteDatabase = dbHelper.writableDatabase
+        return db.delete("cliente", "id = ?", arrayOf(id.toString()))
     }
 }

@@ -7,29 +7,38 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.personal_training.vista.ui.clientes.HomeFragment"
+        android:name="com.example.personal_training.vista.VCliente"
         android:label="@string/menu_clientes"
-        tools:layout="@layout/fragment_clientes">
+        tools:layout="@layout/v_fragment_cliente">
         <action
             android:id="@+id/action_nav_clientes_to_agregarClienteFragment"
             app:destination="@id/agregarClienteFragment" />
+        <action
+            android:id="@+id/action_nav_clientes_to_editarClienteFragment"
+            app:destination="@id/editarClienteFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/agregarClienteFragment"
-        android:name="com.example.personal_training.vista.ui.clientes.AgregarClienteFragment"
+        android:name="com.example.personal_training.controlador.CAgregarClienteFragment"
         android:label="Agregar Cliente"
-        tools:layout="@layout/fragment_agregar_cliente" />
+        tools:layout="@layout/v_fragment_agregar_cliente" />
+
+    <fragment
+        android:id="@+id/editarClienteFragment"
+        android:name="com.example.personal_training.controlador.CEditarClienteFragment"
+        android:label="Editar Cliente"
+        tools:layout="@layout/v_fragment_editar_cliente" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.personal_training.vista.ui.rutinas.GalleryFragment"
+        android:name="com.example.personal_training.vista.VRutina"
         android:label="@string/menu_rutinas"
         tools:layout="@layout/fragment_rutinas" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.personal_training.vista.ui.dietas.SlideshowFragment"
+        android:name="com.example.personal_training.vista.VDieta"
         android:label="@string/menu_dietas"
         tools:layout="@layout/fragment_dietas" />
 

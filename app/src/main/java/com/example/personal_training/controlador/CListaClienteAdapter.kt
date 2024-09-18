@@ -1,4 +1,4 @@
-package com.example.personal_training.vista.ui.clientes
+package com.example.personal_training.controlador
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -7,26 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personal_training.R
-import com.example.personal_training.controlador.CCliente
 import com.example.personal_training.modelo.Cliente
+import com.example.personal_training.modelo.MCliente
 import com.google.android.material.snackbar.Snackbar
 
-class ClienteAdapter(private val listaClientes: MutableList<Cliente>,
-                     private val controladorCliente: CCliente) :
-    RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder>() {
-
-//    private lateinit var controladorCliente: CCliente
+class CListaClienteAdapter(
+    private val listaClientes: MutableList<Cliente>,
+    private val mcliente: MCliente
+) : RecyclerView.Adapter<CListaClienteAdapter.ClienteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_cliente, parent, false)
+            .inflate(R.layout.v_item_cliente, parent, false)
         return ClienteViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {
         val cliente = listaClientes[position]
@@ -34,19 +31,11 @@ class ClienteAdapter(private val listaClientes: MutableList<Cliente>,
         holder.telefonoTextView.text = cliente.telefono
         holder.correoTextView.text = cliente.correo
 
-        // Configurar botón editar
-//        holder.btnEditar.setOnClickListener {
-//            // Navegar a la pantalla de editar cliente o mostrar un diálogo
-//            Snackbar.make(it, "Editar cliente: ${cliente.nombre}", Snackbar.LENGTH_LONG).show()
-//            // Aquí puedes implementar la lógica para editar
-//        }
-
-        // Configurar botón editar
         holder.btnEditar.setOnClickListener {
             val bundle = Bundle().apply {
-                putInt("clienteId", cliente.id!!)  // Pasar el ID del cliente como argumento
+                putInt("clienteId", cliente.id!!)
             }
-            holder.itemView.findNavController().navigate(R.id.action_nav_clientes_to_agregarClienteFragment, bundle)
+            holder.itemView.findNavController().navigate(R.id.action_nav_clientes_to_editarClienteFragment, bundle)
         }
 
         holder.btnEliminar.setOnClickListener {
@@ -54,10 +43,8 @@ class ClienteAdapter(private val listaClientes: MutableList<Cliente>,
                 .setTitle("Eliminar Cliente")
                 .setMessage("¿Estás seguro de que deseas eliminar a ${cliente.nombre}?")
                 .setPositiveButton("Sí") { _, _ ->
-                    // Intentar eliminar el cliente de la base de datos
-                    val resultado = controladorCliente.eliminarCliente(cliente.id!!)
+                    val resultado = mcliente.eliminarCliente(cliente.id!!)
                     if (resultado > 0) {
-                        // Eliminar el cliente de la lista y notificar al adaptador
                         listaClientes.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, itemCount)
@@ -69,7 +56,6 @@ class ClienteAdapter(private val listaClientes: MutableList<Cliente>,
                 .setNegativeButton("No", null)
                 .show()
         }
-
     }
 
     override fun getItemCount() = listaClientes.size

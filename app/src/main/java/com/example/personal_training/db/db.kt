@@ -5,14 +5,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(contexto: Context) : SQLiteOpenHelper(contexto, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         const val DATABASE_NAME = "personal_training.db"
         const val DATABASE_VERSION = 1
 
         const val TABLE_CLIENTE = "cliente"
-        const val TABLE_PLAN_DIETA = "plan_dieta"
+        const val TABLE_DIETA = "dieta"
         const val TABLE_RUTINA = "rutina"
         const val TABLE_EJERCICIO = "ejercicio"
         const val TABLE_RUTINA_EJERCICIO = "rutina_ejercicio"
@@ -32,8 +32,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             );
         """.trimIndent()
 
-        val CREATE_TABLE_PLAN_DIETA = """
-            CREATE TABLE IF NOT EXISTS $TABLE_PLAN_DIETA (
+        val CREATE_TABLE_DIETA = """
+            CREATE TABLE IF NOT EXISTS $TABLE_DIETA (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 descripcion TEXT NOT NULL
             );
@@ -43,12 +43,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
              CREATE TABLE IF NOT EXISTS $TABLE_RUTINA (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 cliente_id INTEGER NOT NULL,
-                plan_dieta_id INTEGER NOT NULL,
+                dieta_id INTEGER NOT NULL,
                 fecha_creacion DATE NOT NULL,
                 nombre TEXT NOT NULL,
                 tipo TEXT NOT NULL,
                 FOREIGN KEY (cliente_id) REFERENCES $TABLE_CLIENTE(id),
-                FOREIGN KEY (plan_dieta_id) REFERENCES $TABLE_PLAN_DIETA(id)
+                FOREIGN KEY (dieta_id) REFERENCES $TABLE_DIETA(id)
             );
         """.trimIndent()
 
@@ -74,7 +74,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         """.trimIndent()
 
         db.execSQL(CREATE_TABLE_CLIENTE)
-        db.execSQL(CREATE_TABLE_PLAN_DIETA)
+        db.execSQL(CREATE_TABLE_DIETA)
         db.execSQL(CREATE_TABLE_RUTINA)
         db.execSQL(CREATE_TABLE_EJERCICIO)
         db.execSQL(CREATE_TABLE_RUTINA_EJERCICIO)
@@ -86,9 +86,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RUTINA_EJERCICIO")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_EJERCICIO")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RUTINA")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_PLAN_DIETA")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_DIETA")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CLIENTE")
         onCreate(db)
     }
+
 }
 

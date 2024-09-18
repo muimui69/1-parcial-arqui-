@@ -6,7 +6,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".vista.ui.clientes.AgregarClienteFragment">
+    tools:context=".controlador.CAgregarClienteFragment">
 
     <EditText
         android:id="@+id/et_nombre_cliente"
@@ -52,10 +52,10 @@
         android:entries="@array/sexo_array" />
 
     <Button
-        android:id="@+id/btn_guardar_cliente"
+        android:id="@+id/btn_editar_cliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="GUARDAR CLIENTE" />
+        android:text="EDITAR CLIENTE" />
 
 </LinearLayout>
