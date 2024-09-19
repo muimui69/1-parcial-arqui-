@@ -30,18 +30,13 @@ class CEditarClienteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializamos el modelo
         mcliente = MCliente(requireContext())
-
-        // Obtenemos el ID del cliente desde los argumentos
         clienteId = arguments?.getInt("clienteId")
 
-        // Si tenemos un ID, cargamos los datos del cliente
         clienteId?.let { id ->
             cargarDatosCliente(id)
         }
 
-        // Configuramos el botón de guardar
         binding.btnEditarCliente.setOnClickListener {
             guardarCambiosCliente()
         }
@@ -56,7 +51,6 @@ class CEditarClienteFragment : Fragment() {
             binding.etTelefonoCliente.setText(cliente.telefono)
             binding.etCorreoCliente.setText(cliente.correo)
 
-            // Configurar el valor en el spinner para el sexo
             val sexoPosition = resources.getStringArray(R.array.sexo_array).indexOf(cliente.sexo)
             binding.spinnerSexo.setSelection(sexoPosition)
         } else {
@@ -72,14 +66,13 @@ class CEditarClienteFragment : Fragment() {
         val correo = binding.etCorreoCliente.text.toString()
         val sexo = binding.spinnerSexo.selectedItem.toString()
 
-        // Validaciones de campos vacíos
         if (nombre.isBlank() || peso <= 0 || altura <= 0 || telefono.isBlank() || correo.isBlank() || sexo.isBlank()) {
             Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_LONG).show()
             return
         }
 
         val clienteEditado = Cliente(
-            id = clienteId,  // Mantener el ID del cliente
+            id = clienteId,
             nombre = nombre,
             peso = peso,
             altura = altura,
@@ -88,7 +81,6 @@ class CEditarClienteFragment : Fragment() {
             sexo = sexo
         )
 
-        // Actualizar cliente en la base de datos
         val resultado = mcliente.actualizarCliente(clienteEditado)
 
         if (resultado > 0) {
@@ -98,8 +90,6 @@ class CEditarClienteFragment : Fragment() {
             Toast.makeText(requireContext(), "Error al actualizar el cliente", Toast.LENGTH_LONG).show()
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

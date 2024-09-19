@@ -10,42 +10,55 @@ data class Dieta(
     var descripcion: String
 )
 
-class MDieta(context: Context) {
-    private val dbHelper: DatabaseHelper = DatabaseHelper(context)
+class MDieta(contexto: Context) {
+    private val dbHelper: DatabaseHelper = DatabaseHelper(contexto)
+    val db: SQLiteDatabase = dbHelper.writableDatabase
 
     fun crearDieta(dieta: Dieta): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
             put("descripcion", dieta.descripcion)
         }
-        return db.insert("plan_dieta", null, valores)
+        return db.insert("dieta", null, valores)
     }
 
-    fun actualizarDieta(dieta: Dieta): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        val valores = ContentValues().apply {
-            put("descripcion", dieta.descripcion)
-        }
-        return db.update("plan_dieta", valores, "id = ?", arrayOf(dieta.id.toString()))
-    }
-
-    fun eliminarDieta(id: Int): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        return db.delete("plan_dieta", "id = ?", arrayOf(id.toString()))
-    }
-
-    fun obtenerDietas(): List<Dieta> {
+    fun obtenerDieta(id: Int): Dieta? {
         val db: SQLiteDatabase = dbHelper.readableDatabase
-        val cursor = db.query("plan_dieta", null, null, null, null, null, null)
-        val listaPlanesDieta = mutableListOf<Dieta>()
-        while (cursor.moveToNext()) {
-            val planDieta = Dieta(
+        val cursor = db.query("dieta",null,"id = ?",arrayOf(id.toString()), null, null,null)
+
+        var dieta: Dieta? = null
+        if (cursor.moveToFirst()) {
+            dieta = Dieta(
                 id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
                 descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
             )
-            listaPlanesDieta.add(planDieta)
         }
         cursor.close()
-        return listaPlanesDieta
+        return dieta
     }
+
+    fun obtenerDietas(): List<Dieta> {
+        val cursor = db.query("dieta", null, null, null, null, null, null)
+        val listaDietas = mutableListOf<Dieta>()
+        while (cursor.moveToNext()) {
+            val dieta = Dieta(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
+            )
+            listaDietas.add(dieta)
+        }
+        cursor.close()
+        return listaDietas
+    }
+
+    fun actualizarDieta(dieta: Dieta): Int {
+        val valores = ContentValues().apply {
+            put("descripcion", dieta.descripcion)
+        }
+        return db.update("dieta", valores, "id = ?", arrayOf(dieta.id.toString()))
+    }
+
+    fun eliminarDieta(id: Int): Int {
+        return db.delete("dieta", "id = ?", arrayOf(id.toString()))
+    }
+
 }

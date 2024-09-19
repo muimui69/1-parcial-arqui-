@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.personal_training.vista.VCliente"
+        android:name="com.example.personal_training.controlador.CCliente"
         android:label="@string/menu_clientes"
         tools:layout="@layout/v_fragment_cliente">
         <action
@@ -32,14 +32,35 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.personal_training.vista.VRutina"
+        android:name="com.example.personal_training.controlador.CRutina"
         android:label="@string/menu_rutinas"
         tools:layout="@layout/fragment_rutinas" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.personal_training.vista.VDieta"
+        android:name="com.example.personal_training.controlador.CDieta"
         android:label="@string/menu_dietas"
-        tools:layout="@layout/fragment_dietas" />
+        tools:layout="@layout/v_fragment_dieta" >
+        <action
+            android:id="@+id/action_nav_dietas_to_agregarDietaFragment"
+            app:destination="@id/agregarDietaFragment" />
+        <action
+            android:id="@+id/action_nav_dietas_to_editarDietaFragment"
+            app:destination="@id/editarDietaFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/agregarDietaFragment"
+        android:name="com.example.personal_training.controlador.CAgregarDietaFragment"
+        android:label="Agregar Dieta"
+        tools:layout="@layout/v_fragment_agregar_dieta" />
+
+    <fragment
+        android:id="@+id/editarDietaFragment"
+        android:name="com.example.personal_training.controlador.CEditarDietaFragment"
+        android:label="Editar Cliente"
+        tools:layout="@layout/v_fragment_editar_dieta" />
+
 
 </navigation>

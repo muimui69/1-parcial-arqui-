@@ -17,9 +17,9 @@ data class Cliente(
 
 class MCliente(contexto: Context) {
     private val dbHelper: DatabaseHelper = DatabaseHelper(contexto)
+    private val db: SQLiteDatabase = dbHelper.writableDatabase
 
     fun crearCliente(cliente: Cliente): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
             put("altura", cliente.altura)
             put("correo", cliente.correo)
@@ -32,7 +32,6 @@ class MCliente(contexto: Context) {
     }
 
     fun obtenerCliente(id: Int): Cliente? {
-        val db: SQLiteDatabase = dbHelper.readableDatabase
         val cursor = db.query("cliente", null, "id = ?", arrayOf(id.toString()), null, null, null)
 
         var cliente: Cliente? = null
@@ -52,7 +51,6 @@ class MCliente(contexto: Context) {
     }
 
     fun obtenerClientes(): List<Cliente> {
-        val db: SQLiteDatabase = dbHelper.readableDatabase
         val cursor = db.query("cliente", null, null, null, null, null, null)
         val listaClientes = mutableListOf<Cliente>()
         while (cursor.moveToNext()) {
@@ -72,7 +70,6 @@ class MCliente(contexto: Context) {
     }
 
     fun actualizarCliente(cliente: Cliente): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
             put("altura", cliente.altura)
             put("correo", cliente.correo)
@@ -85,7 +82,6 @@ class MCliente(contexto: Context) {
     }
 
     fun eliminarCliente(id: Int): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         return db.delete("cliente", "id = ?", arrayOf(id.toString()))
     }
 }

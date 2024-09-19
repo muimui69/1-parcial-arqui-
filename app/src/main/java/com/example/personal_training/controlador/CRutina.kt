@@ -1,15 +1,15 @@
-package com.example.personal_training.vista
+package com.example.personal_training.controlador
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.personal_training.databinding.FragmentDietasBinding
+import com.example.personal_training.databinding.FragmentRutinasBinding
 
-class VDieta : Fragment() {
+class CRutina : Fragment() {
 
-    private var _binding: FragmentDietasBinding? = null
+    private var _binding: FragmentRutinasBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,7 +17,7 @@ class VDieta : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDietasBinding.inflate(inflater, container, false)
+        _binding = FragmentRutinasBinding.inflate(inflater, container, false)
         return binding.root
     }
 
