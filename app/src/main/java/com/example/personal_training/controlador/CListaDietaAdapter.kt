@@ -27,7 +27,7 @@ class CListaDietaAdapter (
 
     override fun onBindViewHolder(holder: DietaViewHolder, position: Int) {
         val dieta = listaDietas[position]
-        holder.descripcionTextView.text = dieta.descripcion
+        holder.descripcionDietaTextView.text = dieta.descripcion
 
         holder.btnEditar.setOnClickListener {
             val bundle = Bundle().apply {
@@ -59,7 +59,7 @@ class CListaDietaAdapter (
     override fun getItemCount() = listaDietas.size
 
     inner class DietaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val descripcionTextView: TextView = itemView.findViewById(R.id.descripcion_dieta)
+        val descripcionDietaTextView: TextView = itemView.findViewById(R.id.descripcion_dieta)
         val btnEditar: Button = itemView.findViewById(R.id.btn_editar_dieta)
         val btnEliminar: Button = itemView.findViewById(R.id.btn_eliminar_dieta)
     }

@@ -10,7 +10,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/text_dieta"
+            android:id="@+id/text_dietas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lista de Dietas"
