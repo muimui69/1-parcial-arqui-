@@ -35,6 +35,7 @@ class DatabaseHelper(contexto: Context) : SQLiteOpenHelper(contexto, DATABASE_NA
         val CREATE_TABLE_DIETA = """
             CREATE TABLE IF NOT EXISTS $TABLE_DIETA (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                titulo TEXT NOT NULL,
                 descripcion TEXT NOT NULL
             );
         """.trimIndent()
@@ -42,11 +43,10 @@ class DatabaseHelper(contexto: Context) : SQLiteOpenHelper(contexto, DATABASE_NA
         val CREATE_TABLE_RUTINA = """
              CREATE TABLE IF NOT EXISTS $TABLE_RUTINA (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                cliente_id INTEGER NOT NULL,
-                dieta_id INTEGER NOT NULL,
-                fecha_creacion DATE NOT NULL,
                 nombre TEXT NOT NULL,
                 tipo TEXT NOT NULL,
+                cliente_id INTEGER NOT NULL,
+                dieta_id INTEGER NOT NULL,
                 FOREIGN KEY (cliente_id) REFERENCES $TABLE_CLIENTE(id),
                 FOREIGN KEY (dieta_id) REFERENCES $TABLE_DIETA(id)
             );
@@ -55,10 +55,10 @@ class DatabaseHelper(contexto: Context) : SQLiteOpenHelper(contexto, DATABASE_NA
         val CREATE_TABLE_EJERCICIO = """
             CREATE TABLE IF NOT EXISTS $TABLE_EJERCICIO (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                archivo_multimedia TEXT,
+                imagen_url TEXT,
                 duracion TEXT NOT NULL,
                 nombre TEXT NOT NULL,
-                repeticiones TEXT NOT NULL
+                repeticion TEXT NOT NULL
             );
         """.trimIndent()
 

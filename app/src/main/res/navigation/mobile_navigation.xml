@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_cliente">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_cliente"
         android:name="com.example.personal_training.controlador.CCliente"
         android:label="@string/menu_clientes"
         tools:layout="@layout/v_fragment_cliente">
@@ -30,14 +30,36 @@
         android:label="Editar Cliente"
         tools:layout="@layout/v_fragment_editar_cliente" />
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.personal_training.controlador.CRutina"
-        android:label="@string/menu_rutinas"
-        tools:layout="@layout/fragment_rutinas" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_ejercicio"
+        android:name="com.example.personal_training.controlador.CEjercicio"
+        android:label="@string/menu_ejercicios"
+        tools:layout="@layout/v_fragment_rutina" >
+        <action
+            android:id="@+id/action_nav_ejercicios_to_agregarEjercicioFragment"
+            app:destination="@id/agregarEjercicioFragment" />
+        <action
+            android:id="@+id/action_nav_ejercicios_to_editarEjercicioFragment"
+            app:destination="@id/editarEjercicioFragment" />
+    </fragment>
+
+
+    <fragment
+            android:id="@+id/agregarEjercicioFragment"
+            android:name="com.example.personal_training.controlador.CAgregarEjercicioFragment"
+            android:label="Agregar Ejercicio"
+            tools:layout="@layout/v_fragment_agregar_ejercicio" />
+
+    <fragment
+        android:id="@+id/editarEjercicioFragment"
+        android:name="com.example.personal_training.controlador.CEditarEjercicioFragment"
+        android:label="Editar Ejercicio"
+        tools:layout="@layout/v_fragment_editar_ejercicio" />
+
+
+    <fragment
+        android:id="@+id/nav_dieta"
         android:name="com.example.personal_training.controlador.CDieta"
         android:label="@string/menu_dietas"
         tools:layout="@layout/v_fragment_dieta" >
@@ -62,5 +84,32 @@
         android:label="Editar Cliente"
         tools:layout="@layout/v_fragment_editar_dieta" />
 
+
+
+    <fragment
+        android:id="@+id/nav_rutina"
+        android:name="com.example.personal_training.controlador.CRutina"
+        android:label="@string/menu_rutinas"
+        tools:layout="@layout/v_fragment_rutina">
+        <action
+            android:id="@+id/action_nav_rutinas_to_agregarRutinaFragment"
+            app:destination="@id/agregarRutinaFragment" />
+        <action
+            android:id="@+id/action_nav_rutinas_to_editarRutinaFragment"
+            app:destination="@id/editarRutinaFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/agregarRutinaFragment"
+        android:name="com.example.personal_training.controlador.CAgregarRutinaFragment"
+        android:label="Agregar Rutina"
+        tools:layout="@layout/v_fragment_agregar_rutina" />
+
+    <fragment
+        android:id="@+id/editarRutinaFragment"
+        android:name="com.example.personal_training.controlador.CEditarRutinaFragment"
+        android:label="Editar Rutina"
+        tools:layout="@layout/v_fragment_editar_rutina" />
 
 </navigation>

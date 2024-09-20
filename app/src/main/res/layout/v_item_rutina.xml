@@ -6,53 +6,39 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/titulo_dieta"
+        android:id="@+id/nombre_rutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripcion dieta"
-        android:textStyle="normal" />
+        android:text="Nombre de la Rutina"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/descripcion_dieta"
+        android:id="@+id/tipo_rutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripcion dieta"
-        android:textStyle="normal" />
-
+        android:text="Tipo de Rutina" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        >
+        android:gravity="end">
 
         <Button
-            android:id="@+id/btn_editar_dieta"
+            android:id="@+id/btn_editar_rutina"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar"
             android:textColor="@android:color/white"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginEnd="8dp"
-            />
+            android:layout_marginEnd="8dp" />
 
         <Button
-            android:id="@+id/btn_eliminar_dieta"
+            android:id="@+id/btn_eliminar_rutina"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Eliminar"
             android:textColor="@android:color/white"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginStart="8dp"
-            />
-
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
 </LinearLayout>

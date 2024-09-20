@@ -44,6 +44,7 @@ class CEditarDietaFragment : Fragment() {
     private fun cargarDatosDieta(id: Int) {
         val dieta = mdieta.obtenerDieta(id)
         if (dieta != null) {
+            binding.etTituloDieta.setText(dieta.titulo)
             binding.etDescripcionDieta.setText(dieta.descripcion)
         } else {
             Toast.makeText(requireContext(), "Error al cargar dieta", Toast.LENGTH_LONG).show()
@@ -51,6 +52,7 @@ class CEditarDietaFragment : Fragment() {
     }
 
     private fun guardarCambiosDieta() {
+        val titulo = binding.etTituloDieta.text.toString()
         val descripcion = binding.etDescripcionDieta.text.toString()
 
         if (descripcion.isBlank() ) {
@@ -59,6 +61,7 @@ class CEditarDietaFragment : Fragment() {
         }
         val dietaEditada = Dieta(
             id = dietaId,
+            titulo = titulo,
             descripcion =descripcion
         )
 

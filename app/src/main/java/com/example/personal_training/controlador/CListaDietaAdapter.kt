@@ -27,6 +27,7 @@ class CListaDietaAdapter (
 
     override fun onBindViewHolder(holder: DietaViewHolder, position: Int) {
         val dieta = listaDietas[position]
+        holder.tituloDietaTextView.text = dieta.titulo
         holder.descripcionDietaTextView.text = dieta.descripcion
 
         holder.btnEditar.setOnClickListener {
@@ -39,7 +40,7 @@ class CListaDietaAdapter (
         holder.btnEliminar.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
                 .setTitle("Eliminar Dieta")
-                .setMessage("¿Estás seguro de que deseas eliminar la dieta '${dieta.descripcion}'?")
+                .setMessage("¿Estás seguro de que deseas eliminar la dieta '${dieta.titulo}'?")
                 .setPositiveButton("Sí") { _, _ ->
                     val resultado = mdieta.eliminarDieta(dieta.id!!)
                     if (resultado > 0) {
@@ -59,6 +60,7 @@ class CListaDietaAdapter (
     override fun getItemCount() = listaDietas.size
 
     inner class DietaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tituloDietaTextView: TextView = itemView.findViewById(R.id.titulo_dieta)
         val descripcionDietaTextView: TextView = itemView.findViewById(R.id.descripcion_dieta)
         val btnEditar: Button = itemView.findViewById(R.id.btn_editar_dieta)
         val btnEliminar: Button = itemView.findViewById(R.id.btn_eliminar_dieta)

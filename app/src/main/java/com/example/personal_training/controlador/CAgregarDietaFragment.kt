@@ -36,14 +36,16 @@ class CAgregarDietaFragment : Fragment() {
     }
 
     private fun guardarDieta() {
+        val titulo = binding.etTituloDieta.text.toString()
         val descripcion = binding.etDescripcionDieta.text.toString()
 
-        if (descripcion.isBlank()) {
+        if (titulo.isBlank() || descripcion.isBlank()) {
             Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_LONG).show()
             return
         }
 
         val nuevaDieta = Dieta(
+            titulo = titulo,
             descripcion = descripcion
         )
 

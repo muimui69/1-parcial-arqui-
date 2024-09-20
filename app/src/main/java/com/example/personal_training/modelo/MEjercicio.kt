@@ -10,41 +10,41 @@ data class Ejercicio(
     var nombre: String,
     var duracion: String,
     var repeticion: String,
-    var archivoMultimedia: String
+    var imagen_url: String
 )
 
-class MEjercicio(context: Context) {
-    private val dbHelper: DatabaseHelper = DatabaseHelper(context)
+class MEjercicio(contexto: Context) {
+    private val dbHelper: DatabaseHelper = DatabaseHelper(contexto)
+    val db: SQLiteDatabase = dbHelper.writableDatabase
 
     fun crearEjercicio(ejercicio: Ejercicio): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
             put("nombre", ejercicio.nombre)
             put("duracion", ejercicio.duracion)
             put("repeticion", ejercicio.repeticion)
-            put("archivo_multimedia", ejercicio.archivoMultimedia)
+            put("imagen_url", ejercicio.imagen_url)
         }
         return db.insert("ejercicio", null, valores)
     }
 
-    fun actualizarEjercicio(ejercicio: Ejercicio): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        val valores = ContentValues().apply {
-            put("nombre", ejercicio.nombre)
-            put("duracion", ejercicio.duracion)
-            put("repeticion", ejercicio.repeticion)
-            put("archivo_multimedia", ejercicio.archivoMultimedia)
-        }
-        return db.update("ejercicio", valores, "id = ?", arrayOf(ejercicio.id.toString()))
-    }
+    fun obtenerEjercicio(id: Int): Ejercicio? {
+        val cursor = db.query("ejercicio", null, "id = ?", arrayOf(id.toString()), null, null, null)
 
-    fun eliminarEjercicio(id: Int): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        return db.delete("ejercicio", "id = ?", arrayOf(id.toString()))
+        var ejercicio: Ejercicio? = null
+        if (cursor.moveToFirst()) {
+            ejercicio =  Ejercicio(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                repeticion = cursor.getString(cursor.getColumnIndexOrThrow("repeticion")),
+                duracion = cursor.getString(cursor.getColumnIndexOrThrow("duracion")),
+                imagen_url = cursor.getString(cursor.getColumnIndexOrThrow("imagen_url"))
+            )
+        }
+        cursor.close()
+        return ejercicio
     }
 
     fun obtenerEjercicios(): List<Ejercicio> {
-        val db: SQLiteDatabase = dbHelper.readableDatabase
         val cursor = db.query("ejercicio", null, null, null, null, null, null)
         val listaEjercicios = mutableListOf<Ejercicio>()
         while (cursor.moveToNext()) {
@@ -53,11 +53,27 @@ class MEjercicio(context: Context) {
                 nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
                 duracion = cursor.getString(cursor.getColumnIndexOrThrow("duracion")),
                 repeticion = cursor.getString(cursor.getColumnIndexOrThrow("repeticion")),
-                archivoMultimedia = cursor.getString(cursor.getColumnIndexOrThrow("archivo_multimedia"))
+                imagen_url = cursor.getString(cursor.getColumnIndexOrThrow("imagen_url"))
             )
             listaEjercicios.add(ejercicio)
         }
         cursor.close()
         return listaEjercicios
     }
+
+    fun actualizarEjercicio(ejercicio: Ejercicio): Int {
+        val valores = ContentValues().apply {
+            put("nombre", ejercicio.nombre)
+            put("duracion", ejercicio.duracion)
+            put("repeticion", ejercicio.repeticion)
+            put("imagen_url", ejercicio.imagen_url)
+        }
+        return db.update("ejercicio", valores, "id = ?", arrayOf(ejercicio.id.toString()))
+    }
+
+    fun eliminarEjercicio(id: Int): Int {
+        return db.delete("ejercicio", "id = ?", arrayOf(id.toString()))
+    }
+
+
 }

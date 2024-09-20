@@ -7,6 +7,7 @@ import com.example.personal_training.db.DatabaseHelper
 
 data class Dieta(
     var id: Int? = null,
+    var titulo: String,
     var descripcion: String
 )
 
@@ -16,6 +17,7 @@ class MDieta(contexto: Context) {
 
     fun crearDieta(dieta: Dieta): Long {
         val valores = ContentValues().apply {
+            put("titulo", dieta.titulo)
             put("descripcion", dieta.descripcion)
         }
         return db.insert("dieta", null, valores)
@@ -29,6 +31,7 @@ class MDieta(contexto: Context) {
         if (cursor.moveToFirst()) {
             dieta = Dieta(
                 id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo")),
                 descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
             )
         }
@@ -42,6 +45,7 @@ class MDieta(contexto: Context) {
         while (cursor.moveToNext()) {
             val dieta = Dieta(
                 id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo")),
                 descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
             )
             listaDietas.add(dieta)
@@ -52,6 +56,7 @@ class MDieta(contexto: Context) {
 
     fun actualizarDieta(dieta: Dieta): Int {
         val valores = ContentValues().apply {
+            put("titulo", dieta.titulo)
             put("descripcion", dieta.descripcion)
         }
         return db.update("dieta", valores, "id = ?", arrayOf(dieta.id.toString()))

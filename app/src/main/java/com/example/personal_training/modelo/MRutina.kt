@@ -7,53 +7,72 @@ import com.example.personal_training.db.DatabaseHelper
 
 data class Rutina(
     var id: Int? = null,
-    var fechaCreacion: String,
     var nombre: String,
-    var tipo: String
+    var tipo: String,
+    var cliente_id: Int,
+    var dieta_id: Int
 )
 
-class MRutina(context: Context) {
-    private val dbHelper: DatabaseHelper = DatabaseHelper(context)
+class MRutina(contexto: Context) {
+    private val dbHelper: DatabaseHelper = DatabaseHelper(contexto)
+    val db: SQLiteDatabase = dbHelper.writableDatabase
 
     fun crearRutina(rutina: Rutina): Long {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
         val valores = ContentValues().apply {
-            put("fecha_creacion", rutina.fechaCreacion)
             put("nombre", rutina.nombre)
             put("tipo", rutina.tipo)
+            put("cliente_id", rutina.cliente_id)
+            put("dieta_id", rutina.dieta_id)
         }
         return db.insert("rutina", null, valores)
     }
 
-    fun actualizarRutina(rutina: Rutina): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        val valores = ContentValues().apply {
-            put("fecha_creacion", rutina.fechaCreacion)
-            put("nombre", rutina.nombre)
-            put("tipo", rutina.tipo)
-        }
-        return db.update("rutina", valores, "id = ?", arrayOf(rutina.id.toString()))
-    }
+    fun obtenerRutina(id: Int): Rutina? {
+        val cursor = db.query("rutina",  null, "id = ?", arrayOf(id.toString()), null,  null,  null   )
 
-    fun eliminarRutina(id: Int): Int {
-        val db: SQLiteDatabase = dbHelper.writableDatabase
-        return db.delete("rutina", "id = ?", arrayOf(id.toString()))
+        var rutina: Rutina? = null
+        if (cursor.moveToFirst()) {
+            rutina = Rutina(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                cliente_id = cursor.getInt(cursor.getColumnIndexOrThrow("cliente_id")),
+                dieta_id = cursor.getInt(cursor.getColumnIndexOrThrow("dieta_id")),
+            )
+        }
+        cursor.close()
+        return rutina
     }
 
     fun obtenerRutinas(): List<Rutina> {
-        val db: SQLiteDatabase = dbHelper.readableDatabase
         val cursor = db.query("rutina", null, null, null, null, null, null)
         val listaRutinas = mutableListOf<Rutina>()
         while (cursor.moveToNext()) {
             val rutina = Rutina(
                 id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                fechaCreacion = cursor.getString(cursor.getColumnIndexOrThrow("fecha_creacion")),
                 nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
-                tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+                tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                cliente_id = cursor.getInt(cursor.getColumnIndexOrThrow("cliente_id")),
+                dieta_id = cursor.getInt(cursor.getColumnIndexOrThrow("dieta_id")),
             )
             listaRutinas.add(rutina)
         }
         cursor.close()
         return listaRutinas
     }
+
+    fun actualizarRutina(rutina: Rutina): Int {
+        val valores = ContentValues().apply {
+            put("nombre", rutina.nombre)
+            put("tipo", rutina.tipo)
+            put("cliente_id", rutina.cliente_id)
+            put("dieta_id", rutina.dieta_id)
+        }
+        return db.update("rutina", valores, "id = ?", arrayOf(rutina.id.toString()))
+    }
+
+    fun eliminarRutina(id: Int): Int {
+        return db.delete("rutina", "id = ?", arrayOf(id.toString()))
+    }
+
 }

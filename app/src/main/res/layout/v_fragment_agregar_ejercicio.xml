@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregar Ejercicio"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_nombre_ejercicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Ejercicio"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/et_duracion_ejercicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Duración"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/et_repeticion_ejercicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Repeticiones"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/tv_imagen_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="No se ha seleccionado archivo multimedia" />
+
+    <Button
+        android:id="@+id/btn_seleccionar_imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Imagen" />
+
+    <Button
+        android:id="@+id/btn_guardar_ejercicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar Ejercicio"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
+
+</LinearLayout>

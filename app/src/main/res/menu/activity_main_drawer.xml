@@ -5,16 +5,20 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_cliente"
             android:icon="@drawable/ic_gestionar_cliente"
             android:title="@string/menu_clientes" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_ejercicio"
+            android:icon="@drawable/ic_gestionar_ejercicio"
+            android:title="@string/menu_ejercicios" />
+        <item
+            android:id="@+id/nav_dieta"
+            android:icon="@drawable/ic_gestionar_dieta"
+            android:title="@string/menu_dietas" />
+        <item
+            android:id="@+id/nav_rutina"
             android:icon="@drawable/ic_gestionar_rutina_entrenamiento"
             android:title="@string/menu_rutinas" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_gestionar_plan_dieta"
-            android:title="@string/menu_dietas" />
     </group>
 </menu>

@@ -9,6 +9,14 @@
     tools:context=".controlador.CAgregarDietaFragment">
 
     <EditText
+        android:id="@+id/et_titulo_dieta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Titulo dieta"
+        />
+
+    <EditText
         android:id="@+id/et_descripcion_dieta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

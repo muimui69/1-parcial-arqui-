@@ -5,30 +5,40 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/titulo_dieta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descripcion dieta"
-        android:textStyle="normal" />
+    <ImageView
+        android:id="@+id/imagen_ejercicio"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="16dp" />
 
     <TextView
-        android:id="@+id/descripcion_dieta"
+        android:id="@+id/nombre_ejercicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripcion dieta"
-        android:textStyle="normal" />
+        android:text="Nombre del ejercicio"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/duracion_ejercicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duración" />
+
+    <TextView
+        android:id="@+id/repeticion_ejercicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repeticiones" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        >
+        android:gravity="end">
 
         <Button
-            android:id="@+id/btn_editar_dieta"
+            android:id="@+id/btn_editar_ejercicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar"
@@ -37,11 +47,10 @@
             android:paddingEnd="16dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:layout_marginEnd="8dp"
-            />
+            android:layout_marginEnd="8dp" />
 
         <Button
-            android:id="@+id/btn_eliminar_dieta"
+            android:id="@+id/btn_eliminar_ejercicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Eliminar"
@@ -50,8 +59,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:layout_marginStart="8dp"
-            />
+            android:layout_marginStart="8dp" />
 
     </LinearLayout>
 

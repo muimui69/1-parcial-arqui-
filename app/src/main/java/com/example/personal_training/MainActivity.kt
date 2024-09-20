@@ -1,7 +1,6 @@
 package com.example.personal_training
 
 import android.os.Bundle
-import android.view.Menu
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_cliente, R.id.nav_ejercicio, R.id.nav_dieta,R.id.nav_rutina
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
