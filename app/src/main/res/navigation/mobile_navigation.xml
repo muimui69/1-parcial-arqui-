@@ -112,4 +112,11 @@
         android:label="Editar Rutina"
         tools:layout="@layout/v_fragment_editar_rutina" />
 
+    <fragment
+        android:id="@+id/nav_enviar_rutina"
+        android:name="com.example.personal_training.controlador.CEnviarRutina"
+        android:label="@string/menu_enviar_rutinas"
+        tools:layout="@layout/v_fragment_enviar_rutina"/>
+
+
 </navigation>

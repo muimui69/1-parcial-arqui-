@@ -75,4 +75,35 @@ class MRutina(contexto: Context) {
         return db.delete("rutina", "id = ?", arrayOf(id.toString()))
     }
 
+    fun obtenerRutinasConClientes(clientesIds: List<Int?>): List<Rutina> {
+        val listaRutinas = mutableListOf<Rutina>()
+
+        if (clientesIds.isEmpty()) return listaRutinas
+
+        val idsString = clientesIds.joinToString(separator = ",")
+
+        val query = """
+        SELECT rutina.* FROM rutina
+        WHERE cliente_id IN ($idsString)
+    """.trimIndent()
+
+        val cursor = db.rawQuery(query, null)
+
+        while (cursor.moveToNext()) {
+            val rutina = Rutina(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre")),
+                tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo")),
+                cliente_id = cursor.getInt(cursor.getColumnIndexOrThrow("cliente_id")),
+                dieta_id = cursor.getInt(cursor.getColumnIndexOrThrow("dieta_id"))
+            )
+
+            listaRutinas.add(rutina)
+        }
+
+        cursor.close()
+        return listaRutinas
+    }
+
+
 }

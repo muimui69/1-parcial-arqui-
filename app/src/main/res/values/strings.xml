@@ -11,13 +11,23 @@
     <string name="menu_ejercicios">Ejercicios</string>
     <string name="menu_dietas">Dietas</string>
     <string name="menu_rutinas">Rutinas</string>
+    <string name="menu_enviar_rutinas">Enviar rutina</string>
 
 
     <string-array name="sexo_array">
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="dias_rutina_array">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miércoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+        <item>Domingo</item>
+    </string-array>
+
 
 </resources>

@@ -40,7 +40,7 @@ class CAgregarEjercicioFragment : Fragment() {
         mejercicio = MEjercicio(requireContext())
 
         binding.btnSeleccionarImagen.setOnClickListener {
-            abrirGaleria()
+            seleccionarImagen()
         }
 
         binding.btnGuardarEjercicio.setOnClickListener {
@@ -48,10 +48,9 @@ class CAgregarEjercicioFragment : Fragment() {
         }
     }
 
-    private fun abrirGaleria() {
-        val intent = Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-        }
+    private fun seleccionarImagen() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
         resultLauncher.launch(intent)
     }
 
@@ -98,13 +97,13 @@ class CAgregarEjercicioFragment : Fragment() {
         }
     }
 
-    private fun copiarImagenAAlmacenamiento(context: Context, imageUri: Uri): String? {
+    private fun copiarImagenAAlmacenamiento(contexto: Context, imageUri: Uri): String? {
         try {
-            val inputStream: InputStream? = context.contentResolver.openInputStream(imageUri)
+            val inputStream: InputStream? = contexto.contentResolver.openInputStream(imageUri)
 
             if (inputStream == null)  return null
 
-            val extension = when (context.contentResolver.getType(imageUri)) {
+            val extension = when (contexto.contentResolver.getType(imageUri)) {
                 "image/png" -> "png"
                 "image/jpeg" -> "jpg"
                 else -> "jpg"
@@ -112,7 +111,7 @@ class CAgregarEjercicioFragment : Fragment() {
 
             val nombreArchivo = "imagen_${System.currentTimeMillis()}.$extension"
 
-            val directorio = File(context.filesDir, "imagenes_ejercicios")
+            val directorio = File(contexto.filesDir, "imagenes_ejercicios")
             if (!directorio.exists()) {
                 val creado = directorio.mkdir()
                 if (!creado) {

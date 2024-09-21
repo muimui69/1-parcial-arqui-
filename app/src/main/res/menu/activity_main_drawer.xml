@@ -20,5 +20,9 @@
             android:id="@+id/nav_rutina"
             android:icon="@drawable/ic_gestionar_rutina_entrenamiento"
             android:title="@string/menu_rutinas" />
+        <item
+            android:id="@+id/nav_enviar_rutina"
+            android:icon="@drawable/ic_enviar_rutina_entrenamiento"
+            android:title="@string/menu_enviar_rutinas" />
     </group>
 </menu>

@@ -7,11 +7,17 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.personal_training.R
 import com.example.personal_training.databinding.VFragmentAgregarRutinaBinding
+import com.example.personal_training.modelo.Ejercicio
 import com.example.personal_training.modelo.MCliente
 import com.example.personal_training.modelo.MDieta
+import com.example.personal_training.modelo.MEjercicio
 import com.example.personal_training.modelo.MRutina
+import com.example.personal_training.modelo.MRutinaEjercicio
 import com.example.personal_training.modelo.Rutina
+import com.example.personal_training.modelo.RutinaEjercicio
 
 class CAgregarRutinaFragment : Fragment() {
 
@@ -21,9 +27,16 @@ class CAgregarRutinaFragment : Fragment() {
     private lateinit var mrutina: MRutina
     private lateinit var mcliente: MCliente
     private lateinit var mdieta: MDieta
+    private lateinit var mejercicio: MEjercicio
+    private lateinit var mrutina_ejercicio: MRutinaEjercicio
 
     private lateinit var clientesIds: MutableList<Int>
     private lateinit var dietasIds: MutableList<Int>
+
+    private lateinit var ejercicioAdapter: CListaEjercicioSeleccionAdapter
+    private lateinit var listaEjercicios: List<Ejercicio>
+    private val ejerciciosSeleccionados = mutableSetOf<Int>()
+    private val diasSeleccionados = mutableMapOf<Int, List<String>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +52,12 @@ class CAgregarRutinaFragment : Fragment() {
         mrutina = MRutina(requireContext())
         mcliente = MCliente(requireContext())
         mdieta = MDieta(requireContext())
+        mejercicio = MEjercicio(requireContext())
+        mrutina_ejercicio = MRutinaEjercicio(requireContext())
 
         cargarClientes()
         cargarDietas()
+        cargarEjercicios()
 
         binding.btnGuardarRutina.setOnClickListener {
             guardarRutina()
@@ -74,6 +90,19 @@ class CAgregarRutinaFragment : Fragment() {
         binding.spinnerDietas.adapter = adapterDietas
     }
 
+    private fun cargarEjercicios() {
+        listaEjercicios = mejercicio.obtenerEjercicios()
+        ejercicioAdapter = CListaEjercicioSeleccionAdapter(
+            listaEjercicios, ejerciciosSeleccionados, diasSeleccionados,
+            resources.getStringArray(R.array.dias_rutina_array)
+        )
+
+        binding.recyclerViewEjercicios.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ejercicioAdapter
+        }
+    }
+
     private fun guardarRutina() {
         val nombre = binding.etNombreRutina.text.toString()
         val tipo = binding.etTipoRutina.text.toString()
@@ -104,10 +133,27 @@ class CAgregarRutinaFragment : Fragment() {
         val resultado = mrutina.crearRutina(rutinaEditada)
 
         if (resultado > 0) {
-            Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
+
+            val rutinaId = resultado.toInt()
+
+            for (ejercicioId in ejerciciosSeleccionados) {
+                val dias = diasSeleccionados[ejercicioId]
+                if (dias != null) {
+                    for (dia in dias) {
+                        val rutinaEjercicio = RutinaEjercicio (
+                            dia_rutina = dia,
+                            rutina_id = rutinaId,
+                            ejercicio_id = ejercicioId
+                        )
+                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
+                    }
+                }
+            }
+
+            Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
             requireActivity().onBackPressed()
         } else {
-            Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Error al guardar la rutina", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -37,7 +37,7 @@ class CListaEjercicioAdapter (
         holder.duracionEjercicioTextView.text = ejercicio.duracion
         holder.repetecionEjercicioTextView.text = ejercicio.repeticion
 
-        cargarImagenEjercicio(ejercicio.imagen_ejercicio, holder.imagenEjercicioImageView)
+        cargarImagenEjercicio(ejercicio.imagen_url, holder.imagenEjercicioImageView)
 
         holder.btnEditar.setOnClickListener {
             val bundle = Bundle().apply {

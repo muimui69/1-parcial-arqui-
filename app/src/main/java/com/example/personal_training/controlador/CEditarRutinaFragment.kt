@@ -7,11 +7,17 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.personal_training.R
 import com.example.personal_training.databinding.VFragmentEditarRutinaBinding
+import com.example.personal_training.modelo.Ejercicio
 import com.example.personal_training.modelo.MCliente
 import com.example.personal_training.modelo.MDieta
+import com.example.personal_training.modelo.MEjercicio
 import com.example.personal_training.modelo.MRutina
+import com.example.personal_training.modelo.MRutinaEjercicio
 import com.example.personal_training.modelo.Rutina
+import com.example.personal_training.modelo.RutinaEjercicio
 
 class CEditarRutinaFragment : Fragment() {
 
@@ -22,9 +28,16 @@ class CEditarRutinaFragment : Fragment() {
     private lateinit var mrutina: MRutina
     private lateinit var mcliente: MCliente
     private lateinit var mdieta: MDieta
+    private lateinit var mejercicio: MEjercicio
+    private lateinit var mrutina_ejercicio: MRutinaEjercicio
 
     private lateinit var clientesIds: List<Int>
     private lateinit var dietasIds: List<Int>
+
+    private lateinit var ejercicioAdapter: CListaEjercicioSeleccionAdapter
+    private lateinit var listaEjercicios: List<Ejercicio>
+    private val ejerciciosSeleccionados = mutableSetOf<Int>()
+    private val diasSeleccionados = mutableMapOf<Int, List<String>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +53,14 @@ class CEditarRutinaFragment : Fragment() {
         mrutina = MRutina(requireContext())
         mcliente = MCliente(requireContext())
         mdieta = MDieta(requireContext())
+        mejercicio = MEjercicio(requireContext())
+        mrutina_ejercicio = MRutinaEjercicio(requireContext())
 
         rutinaId = arguments?.getInt("rutinaId")
 
         cargarClientes()
         cargarDietas()
+        cargarEjercicios()
 
         rutinaId?.let { id ->
             cargarDatosRutina(id)
@@ -75,6 +91,19 @@ class CEditarRutinaFragment : Fragment() {
         binding.spinnerDietas.adapter = adapterDietas
     }
 
+    private fun cargarEjercicios() {
+        listaEjercicios = mejercicio.obtenerEjercicios()
+        ejercicioAdapter = CListaEjercicioSeleccionAdapter(
+            listaEjercicios, ejerciciosSeleccionados, diasSeleccionados,
+            resources.getStringArray(R.array.dias_rutina_array)
+        )
+
+        binding.recyclerViewEjercicios.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ejercicioAdapter
+        }
+    }
+
     private fun cargarDatosRutina(id: Int) {
         val rutina = mrutina.obtenerRutina(id)
         if (rutina != null) {
@@ -91,9 +120,28 @@ class CEditarRutinaFragment : Fragment() {
                 binding.spinnerDietas.setSelection(dietaIndex)
             }
 
+            cargarEjerciciosDeRutina(id)
         } else {
             Toast.makeText(requireContext(), "Error al cargar la rutina", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun cargarEjerciciosDeRutina(rutinaId: Int) {
+        val listaEjerciciosDeRutina = mrutina_ejercicio.obtenerEjerciciosPorRutina(rutinaId)
+
+        ejerciciosSeleccionados.clear()
+        diasSeleccionados.clear()
+
+        listaEjerciciosDeRutina.forEach { (ejercicioId, dia) ->
+            ejercicioId?.let {
+                ejerciciosSeleccionados.add(it)
+                val diasExistentes = diasSeleccionados[it]?.toMutableList() ?: mutableListOf()
+                diasExistentes.add(dia)
+                diasSeleccionados[it] = diasExistentes
+            }
+        }
+
+        ejercicioAdapter.notifyDataSetChanged()
     }
 
     private fun guardarCambiosRutina() {
@@ -118,12 +166,29 @@ class CEditarRutinaFragment : Fragment() {
         val resultado = mrutina.actualizarRutina(rutinaEditada)
 
         if (resultado > 0) {
+            mrutina_ejercicio.eliminarEjerciciosPorRutina(rutinaId!!)
+
+            for (ejercicioId in ejerciciosSeleccionados) {
+                val dias = diasSeleccionados[ejercicioId]
+                if (dias != null) {
+                    for (dia in dias) {
+                        val rutinaEjercicio = RutinaEjercicio(
+                            dia_rutina = dia,
+                            rutina_id = rutinaId!!,
+                            ejercicio_id = ejercicioId
+                        )
+                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
+                    }
+                }
+            }
+
             Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
             requireActivity().onBackPressed()
         } else {
             Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
