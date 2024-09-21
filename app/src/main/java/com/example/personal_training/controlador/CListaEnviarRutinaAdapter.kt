@@ -33,6 +33,7 @@ class CListaEnviarRutinaAdapter(
     override fun onBindViewHolder(holder: EnviarRutinaViewHolder, position: Int) {
         val rutina = listaRutinas[position]
         val cliente = clientes[rutina.cliente_id]
+        val dieta = dietas[rutina.dieta_id]
 
         holder.nombreCliente.text = cliente?.nombre ?: "Cliente no encontrado"
         holder.nombreRutina.text = rutina.nombre
