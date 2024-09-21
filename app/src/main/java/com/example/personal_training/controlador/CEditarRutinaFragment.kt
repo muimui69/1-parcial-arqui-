@@ -10,14 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personal_training.R
 import com.example.personal_training.databinding.VFragmentEditarRutinaBinding
-import com.example.personal_training.modelo.Ejercicio
-import com.example.personal_training.modelo.MCliente
-import com.example.personal_training.modelo.MDieta
-import com.example.personal_training.modelo.MEjercicio
-import com.example.personal_training.modelo.MRutina
-import com.example.personal_training.modelo.MRutinaEjercicio
-import com.example.personal_training.modelo.Rutina
-import com.example.personal_training.modelo.RutinaEjercicio
+import com.example.personal_training.modelo.*
 
 class CEditarRutinaFragment : Fragment() {
 
@@ -128,10 +121,8 @@ class CEditarRutinaFragment : Fragment() {
 
     private fun cargarEjerciciosDeRutina(rutinaId: Int) {
         val listaEjerciciosDeRutina = mrutina_ejercicio.obtenerEjerciciosPorRutina(rutinaId)
-
         ejerciciosSeleccionados.clear()
         diasSeleccionados.clear()
-
         listaEjerciciosDeRutina.forEach { (ejercicioId, dia) ->
             ejercicioId?.let {
                 ejerciciosSeleccionados.add(it)
@@ -140,7 +131,6 @@ class CEditarRutinaFragment : Fragment() {
                 diasSeleccionados[it] = diasExistentes
             }
         }
-
         ejercicioAdapter.notifyDataSetChanged()
     }
 
@@ -188,7 +178,6 @@ class CEditarRutinaFragment : Fragment() {
             Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

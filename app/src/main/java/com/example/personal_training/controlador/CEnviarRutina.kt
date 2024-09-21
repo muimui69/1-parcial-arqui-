@@ -39,7 +39,10 @@ class CEnviarRutina : Fragment() {
         mdieta = MDieta(requireContext())
         mejercicio = MEjercicio(requireContext())
 
+        configurarRecyclerView()
+    }
 
+    private fun configurarRecyclerView() {
         val listaClientes = mcliente.obtenerClientes().toMutableList()
 
         val clientesMap = listaClientes.associateBy { it.id!! }
@@ -62,4 +65,3 @@ class CEnviarRutina : Fragment() {
         _binding = null
     }
 }
-
