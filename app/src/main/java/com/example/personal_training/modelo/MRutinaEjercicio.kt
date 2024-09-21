@@ -37,6 +37,23 @@ class MRutinaEjercicio(contexto: Context) {
         return lista
     }
 
+    fun obtenerTodasRutinaEjercicio(): List<RutinaEjercicio> {
+        val lista = mutableListOf<RutinaEjercicio>()
+        val cursor = db.query("rutina_ejercicio", null, null, null, null, null, null)
+
+        while (cursor.moveToNext()) {
+            val rutinaEjercicio = RutinaEjercicio(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                rutina_id = cursor.getInt(cursor.getColumnIndexOrThrow("rutina_id")),
+                ejercicio_id = cursor.getInt(cursor.getColumnIndexOrThrow("ejercicio_id")),
+                dia_rutina = cursor.getString(cursor.getColumnIndexOrThrow("dia_rutina"))
+            )
+            lista.add(rutinaEjercicio)
+        }
+        cursor.close()
+        return lista
+    }
+
     fun eliminarEjerciciosPorRutina(rutinaId: Int): Int {
         return db.delete("rutina_ejercicio", "rutina_id = ?", arrayOf(rutinaId.toString()))
     }

@@ -11,6 +11,7 @@ import com.example.personal_training.modelo.MCliente
 import com.example.personal_training.modelo.MDieta
 import com.example.personal_training.modelo.MEjercicio
 import com.example.personal_training.modelo.MRutina
+import com.example.personal_training.modelo.MRutinaEjercicio
 
 class CEnviarRutina : Fragment() {
 
@@ -22,6 +23,7 @@ class CEnviarRutina : Fragment() {
     private lateinit var mrutina: MRutina
     private lateinit var mdieta: MDieta
     private lateinit var mejercicio: MEjercicio
+    private lateinit var mrutina_ejercicio: MRutinaEjercicio
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +40,7 @@ class CEnviarRutina : Fragment() {
         mcliente = MCliente(requireContext())
         mdieta = MDieta(requireContext())
         mejercicio = MEjercicio(requireContext())
+        mrutina_ejercicio = MRutinaEjercicio(requireContext())
 
         configurarRecyclerView()
     }
@@ -47,12 +50,18 @@ class CEnviarRutina : Fragment() {
 
         val clientesMap = listaClientes.associateBy { it.id!! }
         val listaDietasMap = mdieta.obtenerDietas().toMutableList().associateBy { it.id!! }
-        val listaEjerciciosMap = mejercicio.obtenerEjercicios().toMutableList().associateBy { it.id!! }
+
+        val listaEjerciciosMap = mejercicio.obtenerEjercicios()
+            .groupBy { it.id!! }
+
+        val listaRutinaEjercicioMap = mrutina_ejercicio.obtenerTodasRutinaEjercicio()
+            .groupBy { it.rutina_id }
+
 
         val clientesIds = listaClientes.map { it.id }
         val listaRutinasConClientes = mrutina.obtenerRutinasConClientes(clientesIds)
 
-        rutinaAdapter = CListaEnviarRutinaAdapter(listaRutinasConClientes, clientesMap, listaDietasMap, listaEjerciciosMap)
+        rutinaAdapter = CListaEnviarRutinaAdapter(listaRutinasConClientes, clientesMap, listaDietasMap, listaEjerciciosMap,listaRutinaEjercicioMap)
 
         binding.recyclerViewEnviarRutina.apply {
             layoutManager = LinearLayoutManager(requireContext())

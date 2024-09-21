@@ -173,6 +173,7 @@ class CEditarRutinaFragment : Fragment() {
             }
 
             Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
+
             requireActivity().onBackPressed()
         } else {
             Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
