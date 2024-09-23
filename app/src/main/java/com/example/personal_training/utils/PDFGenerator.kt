@@ -18,7 +18,7 @@ import java.io.IOException
 object PDFGenerator {
 
     fun generarPDFRutina(
-        context: Context,
+        contexto: Context,
         cliente: Cliente,
         rutina: Rutina,
         dieta: Dieta,
@@ -68,7 +68,6 @@ object PDFGenerator {
                 canvas.drawText("Duración: ${ejercicio.duracion}", 100f, currentY, paint)
                 currentY += 30f
 
-                // Verificar si el ejercicio tiene una imagen
                 val imagePath = ejercicio.imagen_url
                 if (!imagePath.isNullOrEmpty()) {
                     val imgFile = File(imagePath)
@@ -81,7 +80,6 @@ object PDFGenerator {
                     }
                 }
 
-                // Verificar si es necesario crear una nueva página
                 if (currentY > pageInfo.pageHeight - 100) {
                     document.finishPage(page)
                     page = document.startPage(pageInfo)
@@ -91,14 +89,13 @@ object PDFGenerator {
             }
         }
 
-        // Información de la dieta
         canvas.drawText("Dieta: ${dieta.titulo}", 100f, currentY, paint)
         currentY += 30f
         canvas.drawText("Descripción: ${dieta.descripcion}", 100f, currentY, paint)
 
         document.finishPage(page)
 
-        val directoryPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath
+        val directoryPath = contexto.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath
         val pdfFilePath = "$directoryPath/rutina_${cliente.nombre}.pdf"
         val file = File(pdfFilePath)
 

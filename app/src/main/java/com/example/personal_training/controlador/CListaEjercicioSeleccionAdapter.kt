@@ -27,22 +27,18 @@ class CListaEjercicioSeleccionAdapter(
     override fun onBindViewHolder(holder: EjercicioSeleccionViewHolder, position: Int) {
         val ejercicio = listaEjercicios[position]
         holder.nombreEjercicioTextView.text = ejercicio.nombre
-        holder.checkBox.isChecked = ejerciciosSeleccionados.contains(ejercicio.id)
+        holder.checkboxSeleccionarEjercicio.isChecked = ejerciciosSeleccionados.contains(ejercicio.id)
 
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+        holder.checkboxSeleccionarEjercicio.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 ejerciciosSeleccionados.add(ejercicio.id!!)
             } else {
                 ejerciciosSeleccionados.remove(ejercicio.id!!)
             }
         }
-
-        // Configurar el TextView para seleccionar los días
         holder.seleccionDiasTextView.setOnClickListener {
             mostrarDialogoSeleccionDias(holder.itemView.context, ejercicio.id!!, holder.seleccionDiasTextView)
         }
-
-        // Mostrar los días seleccionados si ya existen
         val diasSeleccionadosParaEjercicio = diasSeleccionados[ejercicio.id]
         if (diasSeleccionadosParaEjercicio != null) {
             holder.seleccionDiasTextView.text = diasSeleccionadosParaEjercicio.joinToString(", ")
@@ -74,7 +70,7 @@ class CListaEjercicioSeleccionAdapter(
     override fun getItemCount() = listaEjercicios.size
 
     inner class EjercicioSeleccionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkBox: CheckBox = itemView.findViewById(R.id.checkbox_seleccionar_ejercicio)
+        val checkboxSeleccionarEjercicio: CheckBox = itemView.findViewById(R.id.checkbox_seleccionar_ejercicio)
         val nombreEjercicioTextView: TextView = itemView.findViewById(R.id.nombre_ejercicio)
         val seleccionDiasTextView: TextView = itemView.findViewById(R.id.seleccion_dias)
     }

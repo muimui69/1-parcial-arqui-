@@ -18,7 +18,7 @@ class CEnviarRutina : Fragment() {
     private var _binding: VFragmentEnviarRutinaBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var rutinaAdapter: CListaEnviarRutinaAdapter
+    private lateinit var enviarRutinaAdapter: CListaEnviarRutinaAdapter
     private lateinit var mcliente: MCliente
     private lateinit var mrutina: MRutina
     private lateinit var mdieta: MDieta
@@ -61,11 +61,11 @@ class CEnviarRutina : Fragment() {
         val clientesIds = listaClientes.map { it.id }
         val listaRutinasConClientes = mrutina.obtenerRutinasConClientes(clientesIds)
 
-        rutinaAdapter = CListaEnviarRutinaAdapter(listaRutinasConClientes, clientesMap, listaDietasMap, listaEjerciciosMap,listaRutinaEjercicioMap)
+        enviarRutinaAdapter = CListaEnviarRutinaAdapter(listaRutinasConClientes, clientesMap, listaDietasMap, listaEjerciciosMap,listaRutinaEjercicioMap)
 
         binding.recyclerViewEnviarRutina.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = rutinaAdapter
+            adapter = enviarRutinaAdapter
         }
     }
 

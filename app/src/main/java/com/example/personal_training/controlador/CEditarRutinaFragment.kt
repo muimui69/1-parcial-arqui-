@@ -27,7 +27,7 @@ class CEditarRutinaFragment : Fragment() {
     private lateinit var clientesIds: List<Int>
     private lateinit var dietasIds: List<Int>
 
-    private lateinit var ejercicioAdapter: CListaEjercicioSeleccionAdapter
+    private lateinit var ejercicioSeleccionAdapter: CListaEjercicioSeleccionAdapter
     private lateinit var listaEjercicios: List<Ejercicio>
     private val ejerciciosSeleccionados = mutableSetOf<Int>()
     private val diasSeleccionados = mutableMapOf<Int, List<String>>()
@@ -86,14 +86,14 @@ class CEditarRutinaFragment : Fragment() {
 
     private fun cargarEjercicios() {
         listaEjercicios = mejercicio.obtenerEjercicios()
-        ejercicioAdapter = CListaEjercicioSeleccionAdapter(
+        ejercicioSeleccionAdapter = CListaEjercicioSeleccionAdapter(
             listaEjercicios, ejerciciosSeleccionados, diasSeleccionados,
             resources.getStringArray(R.array.dias_rutina_array)
         )
 
         binding.recyclerViewEjercicios.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = ejercicioAdapter
+            adapter = ejercicioSeleccionAdapter
         }
     }
 
@@ -131,7 +131,7 @@ class CEditarRutinaFragment : Fragment() {
                 diasSeleccionados[it] = diasExistentes
             }
         }
-        ejercicioAdapter.notifyDataSetChanged()
+        ejercicioSeleccionAdapter.notifyDataSetChanged()
     }
 
     private fun guardarCambiosRutina() {

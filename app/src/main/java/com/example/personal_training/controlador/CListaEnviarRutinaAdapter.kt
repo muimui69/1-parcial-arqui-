@@ -26,6 +26,9 @@ class CListaEnviarRutinaAdapter(
     private val listaRutinaEjercicios: Map<Int, List<RutinaEjercicio>>
 ) : RecyclerView.Adapter<CListaEnviarRutinaAdapter.EnviarRutinaViewHolder>() {
 
+    private var pdfFilePath: String? = null
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnviarRutinaViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.v_item_enviar_rutina, parent, false)
@@ -45,7 +48,7 @@ class CListaEnviarRutinaAdapter(
         holder.nombreRutina.text = rutina.nombre
 
         holder.btnVerPdf.setOnClickListener {
-            val pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
+            pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
 
             if (pdfFilePath != null) {
                 val file = File(pdfFilePath)
@@ -71,7 +74,7 @@ class CListaEnviarRutinaAdapter(
         }
 
         holder.btnEnviarPorWpp.setOnClickListener {
-            val pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
+            pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
 
             val pdfFile = File(pdfFilePath)
 
@@ -96,7 +99,7 @@ class CListaEnviarRutinaAdapter(
         }
 
         holder.btnEnviarPorCorreo.setOnClickListener {
-            val pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
+            pdfFilePath = PDFGenerator.generarPDFRutina(holder.itemView.context, cliente!!, rutina,dieta!!,rutinaEjercicioFiltrados,ejerciciosFiltrados)
 
             if (pdfFilePath != null) {
                 val file = File(pdfFilePath)
