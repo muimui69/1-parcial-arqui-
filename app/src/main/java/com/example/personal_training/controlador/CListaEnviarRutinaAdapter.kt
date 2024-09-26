@@ -28,7 +28,6 @@ class CListaEnviarRutinaAdapter(
 
     private var pdfFilePath: String? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EnviarRutinaViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.v_item_enviar_rutina, parent, false)

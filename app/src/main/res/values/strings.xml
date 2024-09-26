@@ -15,6 +15,7 @@
 
 
     <string-array name="sexo_array">
+        <item>Seleccione sexo</item>
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>

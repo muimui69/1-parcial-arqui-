@@ -43,7 +43,7 @@ class CAgregarClienteFragment : Fragment() {
         val correo = binding.etCorreoCliente.text.toString()
         val sexo = binding.spinnerSexo.selectedItem.toString()
 
-        if (nombre.isBlank() || peso <= 0 || altura <= 0 || telefono.isBlank() || correo.isBlank() || sexo.isBlank()) {
+        if (nombre.isBlank() || peso <= 0 || altura <= 0 || telefono.isBlank() || correo.isBlank() || sexo.isBlank() ||  sexo == "Seleccione sexo" ) {
             Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_LONG).show()
             return
         }

@@ -75,12 +75,7 @@ class CListaEjercicioAdapter (
                 imageView.setImageBitmap(bitmap)
             } else {
                 Log.d("ErrorImagen", "La imagen no existe en la ruta: $rutaImagen")
-                // Usa una imagen por defecto si no se puede cargar la imagen
-//                imageView.setImageResource(R.drawable.imagen_no_disponible)
             }
-        } else {
-            // Usa una imagen por defecto si no hay imagen proporcionada
-//            imageView.setImageResource(R.drawable.imagen_no_disponible)
         }
     }
 

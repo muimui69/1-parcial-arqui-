@@ -20,14 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Peso" />
+        android:hint="Peso (kg) Ej: 70.3" />
 
     <EditText
         android:id="@+id/et_altura_cliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Altura" />
+        android:hint="Altura (m) Ej: 1.75" />
 
     <EditText
         android:id="@+id/et_telefono_cliente"
