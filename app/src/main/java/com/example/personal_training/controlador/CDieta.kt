@@ -17,6 +17,7 @@ class CDieta : Fragment() {
     private var _binding: VFragmentDietaBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mdieta: MDieta
     private lateinit var dietaAdapter: CListaDietaAdapter
     private lateinit var fabVFragmentAgregarDietaBinding: FloatingActionButton
 
@@ -38,10 +39,10 @@ class CDieta : Fragment() {
             findNavController().navigate(R.id.action_nav_dietas_to_agregarDietaFragment)
         }
 
-        val modeloDieta = MDieta(requireContext())
-        val listaDietas = modeloDieta.obtenerDietas().toMutableList()
+        mdieta = MDieta(requireContext())
+        val listaDietas = mdieta.obtenerDietas().toMutableList()
 
-        dietaAdapter = CListaDietaAdapter(listaDietas,modeloDieta)
+        dietaAdapter = CListaDietaAdapter(listaDietas,mdieta)
 
         binding.recyclerViewDietas.apply {
             layoutManager = LinearLayoutManager(requireContext())

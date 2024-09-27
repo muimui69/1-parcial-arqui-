@@ -17,6 +17,7 @@ class CRutina : Fragment() {
     private var _binding: VFragmentRutinaBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mrutina: MRutina
     private lateinit var rutinaAdapter: CListaRutinaAdapter
     private lateinit var fabVFragmentAgregarRutinaBinding: FloatingActionButton
 
@@ -37,10 +38,10 @@ class CRutina : Fragment() {
             findNavController().navigate(R.id.action_nav_rutinas_to_agregarRutinaFragment)
         }
 
-        val modeloRutina = MRutina(requireContext())
-        val listaRutinas = modeloRutina.obtenerRutinas().toMutableList()
+        mrutina = MRutina(requireContext())
+        val listaRutinas = mrutina.obtenerRutinas().toMutableList()
 
-        rutinaAdapter = CListaRutinaAdapter(listaRutinas, modeloRutina)
+        rutinaAdapter = CListaRutinaAdapter(listaRutinas, mrutina)
 
         binding.recyclerViewRutinas.apply {
             layoutManager = LinearLayoutManager(requireContext())

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personal_training.R
 import com.example.personal_training.databinding.VFragmentEjercicioBinding
+import com.example.personal_training.modelo.MCliente
 import com.example.personal_training.modelo.MEjercicio
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -17,6 +18,7 @@ class CEjercicio : Fragment() {
     private var _binding: VFragmentEjercicioBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mejercicio: MEjercicio
     private lateinit var ejercicioAdapter: CListaEjercicioAdapter
     private lateinit var fabVFragmentAgregarEjercicioBinding: FloatingActionButton
 
@@ -38,10 +40,10 @@ class CEjercicio : Fragment() {
             findNavController().navigate(R.id.action_nav_ejercicios_to_agregarEjercicioFragment)
         }
 
-        val modeloEjercicio = MEjercicio(requireContext())
-        val listaEjercicios = modeloEjercicio.obtenerEjercicios().toMutableList()
+        mejercicio = MEjercicio(requireContext())
+        val listaEjercicios = mejercicio.obtenerEjercicios().toMutableList()
 
-        ejercicioAdapter = CListaEjercicioAdapter(listaEjercicios,modeloEjercicio)
+        ejercicioAdapter = CListaEjercicioAdapter(listaEjercicios,mejercicio)
 
         binding.recyclerViewEjercicios.apply {
             layoutManager = LinearLayoutManager(requireContext())

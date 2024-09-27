@@ -17,6 +17,7 @@ class CCliente : Fragment() {
     private var _binding: VFragmentClienteBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mcliente: MCliente
     private lateinit var clienteAdapter: CListaClienteAdapter
     private lateinit var fabVFragmentAgregarClienteBinding: FloatingActionButton
 
@@ -38,10 +39,10 @@ class CCliente : Fragment() {
             findNavController().navigate(R.id.action_nav_clientes_to_agregarClienteFragment)
         }
 
-        val modeloCliente = MCliente(requireContext())
-        val listaClientes = modeloCliente.obtenerClientes().toMutableList()
+        mcliente = MCliente(requireContext())
+        val listaClientes = mcliente.obtenerClientes().toMutableList()
 
-        clienteAdapter = CListaClienteAdapter(listaClientes,modeloCliente)
+        clienteAdapter = CListaClienteAdapter(listaClientes,mcliente)
 
         binding.recyclerViewClientes.apply {
             layoutManager = LinearLayoutManager(requireContext())
