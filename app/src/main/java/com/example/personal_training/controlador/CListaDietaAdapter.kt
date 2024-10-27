@@ -59,6 +59,19 @@ class CListaDietaAdapter (
 
     override fun getItemCount() = listaDietas.size
 
+//    //no comentado
+//    fun actualizarLista(nuevasDietas: List<Dieta>) {
+//        listaDietas.clear() // Limpiamos la lista actual
+//        listaDietas.addAll(nuevasDietas) // Añadimos las nuevas dietas
+//        notifyDataSetChanged() // Notificamos al adaptador que los datos cambiaron
+//    }
+//
+//    //no comentado
+//    fun actualizarVista( dietaAdapter: CListaDietaAdapter) {
+//        val dietasActualizadas = mdieta.obtenerDietas().toMutableList()
+//        dietaAdapter.actualizarLista(dietasActualizadas)
+//    }
+
     inner class DietaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tituloDietaTextView: TextView = itemView.findViewById(R.id.titulo_dieta)
         val descripcionDietaTextView: TextView = itemView.findViewById(R.id.descripcion_dieta)
