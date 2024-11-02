@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personal_training.R
+import com.example.personal_training.controlador.command.ActualizarRutinaCommand
+import com.example.personal_training.controlador.command.RutinaInvoker
 import com.example.personal_training.databinding.VFragmentEditarRutinaBinding
 import com.example.personal_training.modelo.*
 
@@ -31,6 +33,8 @@ class CEditarRutinaFragment : Fragment() {
     private lateinit var listaEjercicios: List<Ejercicio>
     private val ejerciciosSeleccionados = mutableSetOf<Int>()
     private val diasSeleccionados = mutableMapOf<Int, List<String>>()
+
+    private val invoker = RutinaInvoker()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,31 +157,55 @@ class CEditarRutinaFragment : Fragment() {
             dieta_id = dietaId
         )
 
-        val resultado = mrutina.actualizarRutina(rutinaEditada)
+//        val resultado = mrutina.actualizarRutina(rutinaEditada)
+//
+//        if (resultado > 0) {
+//            mrutina_ejercicio.eliminarEjerciciosPorRutina(rutinaId!!)
+//
+//            for (ejercicioId in ejerciciosSeleccionados) {
+//                val dias = diasSeleccionados[ejercicioId]
+//                if (dias != null) {
+//                    for (dia in dias) {
+//                        val rutinaEjercicio = RutinaEjercicio(
+//                            dia_rutina = dia,
+//                            rutina_id = rutinaId!!,
+//                            ejercicio_id = ejercicioId
+//                        )
+//                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
+//                    }
+//                }
+//            }
+//
+//            Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
+//
+//            requireActivity().onBackPressed()
+//        } else {
+//            Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
+//        }
 
-        if (resultado > 0) {
-            mrutina_ejercicio.eliminarEjerciciosPorRutina(rutinaId!!)
+        // Ejecutar el comando de actualización
+        val actualizarCommand = ActualizarRutinaCommand(mrutina, rutinaEditada)
+        invoker.setCommand(actualizarCommand)
+        invoker.executeCommand()
 
-            for (ejercicioId in ejerciciosSeleccionados) {
-                val dias = diasSeleccionados[ejercicioId]
-                if (dias != null) {
-                    for (dia in dias) {
-                        val rutinaEjercicio = RutinaEjercicio(
-                            dia_rutina = dia,
-                            rutina_id = rutinaId!!,
-                            ejercicio_id = ejercicioId
-                        )
-                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
-                    }
+        // Actualizar la relación de ejercicios en la base de datos
+        mrutina_ejercicio.eliminarEjerciciosPorRutina(rutinaId!!)
+        for (ejercicioId in ejerciciosSeleccionados) {
+            val dias = diasSeleccionados[ejercicioId]
+            if (dias != null) {
+                for (dia in dias) {
+                    val rutinaEjercicio = RutinaEjercicio(
+                        dia_rutina = dia,
+                        rutina_id = rutinaId!!,
+                        ejercicio_id = ejercicioId
+                    )
+                    mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
                 }
             }
-
-            Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
-
-            requireActivity().onBackPressed()
-        } else {
-            Toast.makeText(requireContext(), "Error al actualizar la rutina", Toast.LENGTH_LONG).show()
         }
+
+        Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
+        requireActivity().onBackPressed()
     }
 
     override fun onDestroyView() {

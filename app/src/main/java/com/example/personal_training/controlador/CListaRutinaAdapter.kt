@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personal_training.R
+import com.example.personal_training.controlador.command.EliminarRutinaCommand
+import com.example.personal_training.controlador.command.RutinaInvoker
 import com.example.personal_training.modelo.MRutina
 import com.example.personal_training.modelo.Rutina
 import com.google.android.material.snackbar.Snackbar
@@ -18,6 +20,8 @@ class CListaRutinaAdapter(
     private val listaRutinas: MutableList<Rutina>,
     private val mrutina: MRutina
 ) : RecyclerView.Adapter<CListaRutinaAdapter.RutinaViewHolder>() {
+
+    private val invoker  = RutinaInvoker()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutinaViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -43,15 +47,26 @@ class CListaRutinaAdapter(
                 .setTitle("Eliminar Rutina")
                 .setMessage("¿Estás seguro de que deseas eliminar la rutina '${rutina.nombre}'?")
                 .setPositiveButton("Sí") { _, _ ->
-                    val resultado = mrutina.eliminarRutina(rutina.id!!)
-                    if (resultado > 0) {
-                        listaRutinas.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, itemCount)
-                        Snackbar.make(it, "Rutina eliminada", Snackbar.LENGTH_SHORT).show()
-                    } else {
-                        Snackbar.make(it, "Error al eliminar la rutina", Snackbar.LENGTH_SHORT).show()
-                    }
+
+//                    val resultado = mrutina.eliminarRutina(rutina.id!!)
+//                    if (resultado > 0) {
+//                        listaRutinas.removeAt(position)
+//                        notifyItemRemoved(position)
+//                        notifyItemRangeChanged(position, itemCount)
+//                        Snackbar.make(it, "Rutina eliminada", Snackbar.LENGTH_SHORT).show()
+//                    } else {
+//                        Snackbar.make(it, "Error al eliminar la rutina", Snackbar.LENGTH_SHORT).show()
+//                    }
+
+                    //desiggn pattern command
+                    val eliminarCommand = EliminarRutinaCommand(mrutina, rutina.id!!)
+                    invoker.setCommand(eliminarCommand)
+                    invoker.executeCommand()
+
+                    listaRutinas.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, itemCount)
+                    Snackbar.make(holder.itemView, "Rutina eliminada", Snackbar.LENGTH_SHORT).show()
                 }
                 .setNegativeButton("No", null)
                 .show()

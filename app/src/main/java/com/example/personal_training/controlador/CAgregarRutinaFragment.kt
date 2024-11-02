@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.personal_training.R
+import com.example.personal_training.controlador.command.CrearRutinaCommand
+import com.example.personal_training.controlador.command.RutinaInvoker
 import com.example.personal_training.databinding.VFragmentAgregarRutinaBinding
 import com.example.personal_training.modelo.Ejercicio
 import com.example.personal_training.modelo.MCliente
@@ -37,6 +39,9 @@ class CAgregarRutinaFragment : Fragment() {
     private lateinit var listaEjercicios: List<Ejercicio>
     private val ejerciciosSeleccionados = mutableSetOf<Int>()
     private val diasSeleccionados = mutableMapOf<Int, List<String>>()
+
+    private val invoker = RutinaInvoker()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,38 +128,64 @@ class CAgregarRutinaFragment : Fragment() {
             return
         }
 
-        val rutinaEditada = Rutina(
+        val rutinaCreada = Rutina(
             nombre = nombre,
             tipo = tipo,
             cliente_id = clienteId,
             dieta_id = dietaId
         )
 
-        val resultado = mrutina.crearRutina(rutinaEditada)
+//        val resultado = mrutina.crearRutina(rutinaCreada)
+//
+//        if (resultado > 0) {
+//
+//            val rutinaId = resultado.toInt()
+//
+//            for (ejercicioId in ejerciciosSeleccionados) {
+//                val dias = diasSeleccionados[ejercicioId]
+//                if (dias != null) {
+//                    for (dia in dias) {
+//                        val rutinaEjercicio = RutinaEjercicio (
+//                            dia_rutina = dia,
+//                            rutina_id = rutinaId,
+//                            ejercicio_id = ejercicioId
+//                        )
+//                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
+//                    }
+//                }
+//            }
+//
+//            Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
+//            requireActivity().onBackPressed()
+//        } else {
+//            Toast.makeText(requireContext(), "Error al guardar la rutina", Toast.LENGTH_LONG).show()
+//        }
 
-        if (resultado > 0) {
+        // Crear el comando de creación y ejecutarlo mediante el invoker
+        val crearCommand = CrearRutinaCommand(mrutina, rutinaCreada)
+        invoker.setCommand(crearCommand)
+        invoker.executeCommand()
 
-            val rutinaId = resultado.toInt()
+        // Obtener el ID de la rutina recién creada para asociar los ejercicios
+        val rutinaId = crearCommand.rutinaId?.toInt() ?: return
 
-            for (ejercicioId in ejerciciosSeleccionados) {
-                val dias = diasSeleccionados[ejercicioId]
-                if (dias != null) {
-                    for (dia in dias) {
-                        val rutinaEjercicio = RutinaEjercicio (
-                            dia_rutina = dia,
-                            rutina_id = rutinaId,
-                            ejercicio_id = ejercicioId
-                        )
-                        mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
-                    }
+        // Asocia los ejercicios seleccionados a la rutina creada
+        for (ejercicioId in ejerciciosSeleccionados) {
+            val dias = diasSeleccionados[ejercicioId]
+            if (dias != null) {
+                for (dia in dias) {
+                    val rutinaEjercicio = RutinaEjercicio(
+                        dia_rutina = dia,
+                        rutina_id = rutinaId,
+                        ejercicio_id = ejercicioId
+                    )
+                    mrutina_ejercicio.asociarEjercicioARutina(rutinaEjercicio)
                 }
             }
-
-            Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
-            requireActivity().onBackPressed()
-        } else {
-            Toast.makeText(requireContext(), "Error al guardar la rutina", Toast.LENGTH_LONG).show()
         }
+
+        Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
+        requireActivity().onBackPressed()
     }
 
     override fun onDestroyView() {
