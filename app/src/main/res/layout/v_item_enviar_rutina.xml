@@ -20,6 +20,12 @@
         android:text="Nombre del cliente"
         android:layout_marginBottom="8dp" />
 
+    <TextView
+        android:id="@+id/estado_rutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado rutina" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -53,6 +59,7 @@
             android:padding="12dp"
             android:text="Correo"
             android:textColor="@android:color/white" />
+
     </LinearLayout>
 
 </LinearLayout>

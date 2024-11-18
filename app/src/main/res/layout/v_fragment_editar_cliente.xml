@@ -58,4 +58,25 @@
         android:layout_marginTop="24dp"
         android:text="Editar Cliente" />
 
+    <Button
+        android:id="@+id/btn_guardar_temporales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar Cambios Temporales"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btn_deshacer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Deshacer Cambios" />
+
+    <Button
+        android:id="@+id/btn_rehacer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Rehacer Cambios" />
+
 </LinearLayout>

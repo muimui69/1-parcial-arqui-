@@ -42,7 +42,6 @@ class CAgregarRutinaFragment : Fragment() {
 
     private val invoker = RutinaInvoker()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

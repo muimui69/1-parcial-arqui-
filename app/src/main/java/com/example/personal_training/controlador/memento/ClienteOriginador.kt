@@ -21,8 +21,4 @@ class Originator(private var estado: Cliente) {
         println("Estado restaurado: ${estado.nombre}, ${estado.correo}")
     }
 
-    fun setMemento(memento: Memento) {
-        estado = memento.getState()
-        println("Estado establecido desde el memento: ${estado.nombre}, ${estado.correo}")
-    }
 }

@@ -105,5 +105,4 @@ class MRutina(contexto: Context) {
         return listaRutinas
     }
 
-
 }
