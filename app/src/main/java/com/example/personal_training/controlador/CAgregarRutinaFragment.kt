@@ -1,6 +1,7 @@
 package com.example.personal_training.controlador
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.example.personal_training.modelo.MRutina
 import com.example.personal_training.modelo.MRutinaEjercicio
 import com.example.personal_training.modelo.Rutina
 import com.example.personal_training.modelo.RutinaEjercicio
+import com.google.android.material.snackbar.Snackbar
 
 class CAgregarRutinaFragment : Fragment() {
 
@@ -108,6 +110,11 @@ class CAgregarRutinaFragment : Fragment() {
     }
 
     private fun guardarRutina() {
+        if (!isAdded) {
+            Log.e("CAgregarRutinaFragment", "El fragmento no está adjunto al contexto.")
+            return
+        }
+
         val nombre = binding.etNombreRutina.text.toString()
         val tipo = binding.etTipoRutina.text.toString()
 
@@ -183,8 +190,31 @@ class CAgregarRutinaFragment : Fragment() {
             }
         }
 
-        Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
-        requireActivity().onBackPressed()
+        //Toast.makeText(requireContext(), "Rutina guardada con éxito", Toast.LENGTH_LONG).show()
+        if (isAdded) {
+            Snackbar.make(binding.root, "Rutina guardada con éxito", Snackbar.LENGTH_LONG)
+                .setAction("Deshacer") {
+                    deshacerRutina()
+                }
+                .show()
+        }
+    }
+
+    private fun deshacerRutina() {
+        if (!isAdded) {
+            Log.e("CAgregarRutinaFragment", "El fragmento no está adjunto al contexto.")
+            return
+        }
+
+        try {
+            invoker.undoCommand()
+            if (isAdded) { // Verificar nuevamente antes de interactuar con la UI
+                Toast.makeText(requireContext(), "Rutina eliminada", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressed() // Volver a la vista anterior
+            }
+        } catch (e: IllegalStateException) {
+            Log.e("CAgregarRutinaFragment", "Error al deshacer la rutina", e)
+        }
     }
 
     override fun onDestroyView() {

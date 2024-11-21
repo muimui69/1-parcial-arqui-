@@ -21,7 +21,8 @@ class ActualizarRutinaCommand(
             mrutina.actualizarRutina(rutinaAnterior!!)
             println("Rutina revertida a su estado anterior: ${rutinaAnterior?.nombre}")
         } else {
-            println("No hay estado anterior para deshacer la actualización.")
+            println("No se puede deshacer: rutina anterior es nula.")
+            throw IllegalStateException("No se guardó el estado anterior antes de actualizar.")
         }
     }
 }

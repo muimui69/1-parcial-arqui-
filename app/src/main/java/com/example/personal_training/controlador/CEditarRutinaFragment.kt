@@ -1,6 +1,7 @@
 package com.example.personal_training.controlador
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.personal_training.controlador.command.ActualizarRutinaCommand
 import com.example.personal_training.controlador.command.RutinaInvoker
 import com.example.personal_training.databinding.VFragmentEditarRutinaBinding
 import com.example.personal_training.modelo.*
+import com.google.android.material.snackbar.Snackbar
 
 class CEditarRutinaFragment : Fragment() {
 
@@ -139,6 +141,11 @@ class CEditarRutinaFragment : Fragment() {
     }
 
     private fun guardarCambiosRutina() {
+        if (!isAdded) {
+            Log.e("CEditarRutinaFragment", "El fragmento no está adjunto al contexto.")
+            return
+        }
+
         val nombre = binding.etNombreRutina.text.toString()
         val tipo = binding.etTipoRutina.text.toString()
         val clienteId = clientesIds[binding.spinnerClientes.selectedItemPosition]
@@ -204,8 +211,34 @@ class CEditarRutinaFragment : Fragment() {
             }
         }
 
-        Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
-        requireActivity().onBackPressed()
+        // Toast.makeText(requireContext(), "Rutina actualizada con éxito", Toast.LENGTH_LONG).show()
+        //requireActivity().onBackPressed()
+
+        // Mostrar el Snackbar con la opción de deshacer
+        if (isAdded) {
+            Snackbar.make(binding.root, "Cambios guardados con éxito", Snackbar.LENGTH_LONG)
+                .setAction("Deshacer") {
+                    deshacerCambios()
+                }
+                .show()
+        }
+    }
+
+    private fun deshacerCambios() {
+        if (!isAdded) {
+            Log.e("CEditarRutinaFragment", "El fragmento no está adjunto al contexto.")
+            return
+        }
+
+        try {
+            invoker.undoCommand()
+            if (isAdded) { // Verificación antes de interactuar con la UI
+                Toast.makeText(requireContext(), "Cambios deshechos", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressed() // Regresar a la vista anterior
+            }
+        } catch (e: IllegalStateException) {
+            Log.e("CEditarRutinaFragment", "Error al deshacer los cambios", e)
+        }
     }
 
     override fun onDestroyView() {

@@ -11,16 +11,34 @@ class EliminarRutinaCommand(
     private var backup: Rutina? = null
 
     override fun execute() {
-        val resultado = mrutina.eliminarRutina(rutinaId)
-        if (resultado > 0) {
-            println("Rutina eliminada con ID: $rutinaId")
+        // Respaldar la rutina antes de eliminarla
+        backup = mrutina.obtenerRutina(rutinaId)
+        if (backup != null) {
+            val resultado = mrutina.eliminarRutina(rutinaId)
+            if (resultado > 0) {
+                println("Rutina eliminada: ${backup?.nombre} con ID: $rutinaId")
+            } else {
+                println("Error al eliminar la rutina con ID: $rutinaId")
+                throw IllegalStateException("No se pudo eliminar la rutina con ID: $rutinaId")
+            }
         } else {
-            println("Error al eliminar la rutina con ID: $rutinaId")
+            println("No se encontró la rutina con ID: $rutinaId para eliminar.")
+            throw IllegalStateException("La rutina con ID: $rutinaId no existe.")
         }
     }
 
     override fun undo() {
-        backup?.let { mrutina.crearRutina(it) }
-        println("Rutina restaurada con ID: ${backup?.id}")
+        if (backup != null) {
+            val resultado = mrutina.crearRutina(backup!!)
+            if (resultado > 0) {
+                println("Rutina restaurada: ${backup?.nombre} con ID: ${backup?.id}")
+            } else {
+                println("Error al restaurar la rutina: ${backup?.nombre}")
+                throw IllegalStateException("No se pudo restaurar la rutina: ${backup?.nombre}")
+            }
+        } else {
+            println("No se puede deshacer: no hay respaldo disponible.")
+            throw IllegalStateException("No hay respaldo para restaurar la rutina eliminada.")
+        }
     }
 }

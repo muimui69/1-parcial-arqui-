@@ -66,7 +66,17 @@ class CListaRutinaAdapter(
                     listaRutinas.removeAt(position)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, itemCount)
-                    Snackbar.make(holder.itemView, "Rutina eliminada", Snackbar.LENGTH_SHORT).show()
+                    //Snackbar.make(holder.itemView, "Rutina eliminada", Snackbar.LENGTH_SHORT).show()
+                    // Mostrar un Snackbar con opción para deshacer
+                    Snackbar.make(holder.itemView, "Rutina eliminada", Snackbar.LENGTH_LONG)
+                        .setAction("Deshacer") {
+                            invoker.undoCommand()
+                            listaRutinas.add(position, rutina)
+                            notifyItemInserted(position)
+                            notifyItemRangeChanged(position, itemCount)
+                            Snackbar.make(holder.itemView, "Eliminación deshecha", Snackbar.LENGTH_SHORT).show()
+                        }
+                        .show()
                 }
                 .setNegativeButton("No", null)
                 .show()
