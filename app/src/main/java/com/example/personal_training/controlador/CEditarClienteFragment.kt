@@ -125,7 +125,7 @@ class CEditarClienteFragment : Fragment() {
 
         if (memento != null) {
             originator.restore(memento)
-            val clienteRestaurado = originator.getState()
+            val clienteRestaurado = originator.getCliente()
 
             // Restaurar los datos en la interfaz
             binding.etNombreCliente.setText(clienteRestaurado.nombre)
@@ -146,7 +146,7 @@ class CEditarClienteFragment : Fragment() {
         val memento = clienteCaretaker.redo()
         if (memento != null) {
             originator.restore(memento)
-            val clienteRestaurado = originator.getState()
+            val clienteRestaurado = originator.getCliente()
 
             // Restaurar los datos en la interfaz
             binding.etNombreCliente.setText(clienteRestaurado.nombre)
@@ -175,14 +175,14 @@ class CEditarClienteFragment : Fragment() {
             sexo = binding.spinnerSexo.selectedItem.toString()
         )
 
-        // Actualizar el estado del Originator con el nuevo cliente
-        originator = Originator(clienteEditado)
+        // Actualizar el estado del Originator con el nuevo cliente usando write
+        originator.setState(clienteEditado)
 
         // Crear un nuevo Memento y guardarlo en el ClienteCaretaker
         val memento = originator.createMemento()
         clienteCaretaker.addMemento(memento)
 
-        Log.d("memento", memento.toString())
+        Log.d("memento", "Estado guardado temporalmente: $memento")
     }
 
 
