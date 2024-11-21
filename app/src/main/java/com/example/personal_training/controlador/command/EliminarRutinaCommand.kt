@@ -1,18 +1,26 @@
 package com.example.personal_training.controlador.command
 
+import android.content.Context
 import com.example.personal_training.modelo.MRutina
+import com.example.personal_training.modelo.MRutinaEjercicio
 import com.example.personal_training.modelo.Rutina
+import com.example.personal_training.modelo.RutinaEjercicio
 
 class EliminarRutinaCommand(
     private val mrutina: MRutina,
     private val rutinaId: Int,
+    private val context: Context
 ) : Command {
 
     private var backup: Rutina? = null
+    private var backupEjercicios: List<Pair<Int?, String>>? = null
+    private val mrutinaEjercicio: MRutinaEjercicio = MRutinaEjercicio(context)
 
     override fun execute() {
         // Respaldar la rutina antes de eliminarla
         backup = mrutina.obtenerRutina(rutinaId)
+        backupEjercicios = mrutinaEjercicio.obtenerEjerciciosPorRutina(rutinaId)
+
         if (backup != null) {
             val resultado = mrutina.eliminarRutina(rutinaId)
             if (resultado > 0) {
@@ -28,17 +36,26 @@ class EliminarRutinaCommand(
     }
 
     override fun undo() {
-        if (backup != null) {
-            val resultado = mrutina.crearRutina(backup!!)
-            if (resultado > 0) {
-                println("Rutina restaurada: ${backup?.nombre} con ID: ${backup?.id}")
+        backup?.let {
+            // Restaurar la rutina en la base de datos
+            val rutinaIdRestaurado = mrutina.crearRutina(it)
+            if (rutinaIdRestaurado > 0) {
+                // Restaurar los ejercicios asociados a la rutina
+                backupEjercicios?.forEach { (ejercicioId, dia) ->
+                    if (ejercicioId != null) {
+                        mrutinaEjercicio.asociarEjercicioARutina(
+                            RutinaEjercicio(
+                                rutina_id = rutinaIdRestaurado.toInt(),
+                                ejercicio_id = ejercicioId,
+                                dia_rutina = dia
+                            )
+                        )
+                    }
+                }
             } else {
-                println("Error al restaurar la rutina: ${backup?.nombre}")
-                throw IllegalStateException("No se pudo restaurar la rutina: ${backup?.nombre}")
+                throw IllegalStateException("No se pudo restaurar la rutina.")
             }
-        } else {
-            println("No se puede deshacer: no hay respaldo disponible.")
-            throw IllegalStateException("No hay respaldo para restaurar la rutina eliminada.")
-        }
+        } ?: throw IllegalStateException("No hay datos respaldados para restaurar.")
     }
+
 }

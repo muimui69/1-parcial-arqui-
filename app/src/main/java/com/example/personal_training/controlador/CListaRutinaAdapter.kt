@@ -2,6 +2,7 @@ package com.example.personal_training.controlador
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +60,7 @@ class CListaRutinaAdapter(
 //                    }
 
                     //desiggn pattern command
-                    val eliminarCommand = EliminarRutinaCommand(mrutina, rutina.id!!)
+                    val eliminarCommand = EliminarRutinaCommand(mrutina, rutina.id!!, holder.itemView.context)
                     invoker.setCommand(eliminarCommand)
                     invoker.executeCommand()
 
@@ -70,11 +71,20 @@ class CListaRutinaAdapter(
                     // Mostrar un Snackbar con opción para deshacer
                     Snackbar.make(holder.itemView, "Rutina eliminada", Snackbar.LENGTH_LONG)
                         .setAction("Deshacer") {
-                            invoker.undoCommand()
-                            listaRutinas.add(position, rutina)
-                            notifyItemInserted(position)
-                            notifyItemRangeChanged(position, itemCount)
-                            Snackbar.make(holder.itemView, "Eliminación deshecha", Snackbar.LENGTH_SHORT).show()
+                            try {
+                                invoker.undoCommand()
+                                listaRutinas.add(position, rutina)
+                                notifyItemInserted(position)
+                                notifyItemRangeChanged(position, listaRutinas.size)
+                                // Verifica que el itemView siga adjunto antes de mostrar otro Snackbar
+                                if (holder.itemView.isAttachedToWindow) {
+                                    Snackbar.make(holder.itemView, "Eliminación deshecha", Snackbar.LENGTH_SHORT).show()
+                                } else {
+                                    Log.e("CListaRutinaAdapter", "La vista no está adjunta al árbol de vistas. No se puede mostrar el Snackbar.")
+                                }
+                            } catch (e: Exception) {
+                                Log.e("CListaRutinaAdapter", "Error al deshacer la eliminación", e)
+                            }
                         }
                         .show()
                 }
